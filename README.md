@@ -1,5 +1,5 @@
 # R3Vidsv2
-To start:
+## To start:
 1. Add a directory named public
 2. Add some videos
 3. Run docker compose
