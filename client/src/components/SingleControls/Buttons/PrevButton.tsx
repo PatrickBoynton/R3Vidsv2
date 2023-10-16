@@ -9,21 +9,19 @@ import Icon from './Icon'
 import { IconStyles } from '../../../utils/styles'
 
 interface Props {
-  currentIndex: any
+  currentIndex: number
 }
 
-const PrevButton = ({currentIndex}: Props) => {
+const PrevButton = ({ currentIndex }: Props) => {
   const { keyword } = useParams()
   const { data: videos } = useGetVideosQuery({ keyword })
-  const dispatch= useDispatch()
+  const dispatch = useDispatch()
 
   const goToPreviousItem = (currentIndex: number): void => {
     if (videos && videos.length > 0) {
       let newIndex = (currentIndex - 1 + videos.length) % videos.length
       dispatch(setCurrentIndex(newIndex))
-
       const previousVideo: IVideo = videos[newIndex]
-
       dispatch(setVideoSrc(previousVideo.url))
       dispatch(setVideoTitle(previousVideo.title))
     }
@@ -32,7 +30,12 @@ const PrevButton = ({currentIndex}: Props) => {
   const handlePreviousVideo = (currentIndex: number): void => {
     goToPreviousItem(currentIndex)
   }
-    return <Icon onClick={() => handlePreviousVideo(currentIndex)} icon={<SkipPrevious  sx={IconStyles} />} />
+  return (
+    <Icon
+      onClick={() => handlePreviousVideo(currentIndex)}
+      icon={<SkipPrevious sx={IconStyles} />}
+    />
+  )
 }
 
 export default PrevButton
