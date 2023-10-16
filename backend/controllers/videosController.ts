@@ -2,16 +2,22 @@ import { Video } from '../models/videoSchema'
 import { Request, Response } from 'express'
 import { IVideo } from '../interfaces/IVideo'
 
-export const getAllVideos = async (req: Request, res: Response): Promise<void> => {
-    const keyword = req.query.keyword
-      ? { title: { $regex: req.query.keyword, $options: 'i' } }
-      : {}
-    const videos: IVideo[] = await Video.find({ ...keyword })
+export const getAllVideos = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const keyword = (req.query.title as string)
+    ? { title: { $regex: req.query.title, $options: 'i' } }
+    : { title: '' }
+  const videos: IVideo[] = await Video.find({ ...keyword })
 
-    res.status(200).json(videos)
+  res.status(200).json(videos)
 }
 
-export const getAllVideosFiltered = async (req: Request, res: Response): Promise<any> => {
+export const getAllVideosFiltered = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   const keyword = req.query.keyword
     ? { title: { $regex: req.query.keyword, $options: 'i' } }
     : {}
@@ -49,14 +55,20 @@ export const getAllVideosFiltered = async (req: Request, res: Response): Promise
   res.status(200).json(filteredVideos)
 }
 
-export const getSingleVideo = async (req: Request, res: Response): Promise<void> => {
+export const getSingleVideo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const video = await Video.findById(req.params.id)
   res.status(200).json(video)
 }
 
-export const getRandomVideo = async (req: Request, res: Response): Promise<any> => {
+export const getRandomVideo = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   // Gets a random video.
-  const videos = await Video.aggregate([{$sample: {size: 1}}])
+  const videos = await Video.aggregate([{ $sample: { size: 1 } }])
   const filterNumber = Number(req.query.filter)
   const condition = req.query.condition
 
@@ -78,83 +90,102 @@ export const getRandomVideo = async (req: Request, res: Response): Promise<any> 
 
   const playedVideo = await Video.findById(randomVideo._id)
 
-
   if (!playedVideo?.played && playedVideo) playedVideo.played = true
-  if(!playedVideo?.playCount && playedVideo) playedVideo.playCount += 1
-  if(!playedVideo?.lastPlayed && playedVideo) playedVideo.lastPlayed = new Date()
+  if (!playedVideo?.playCount && playedVideo) playedVideo.playCount += 1
+  if (!playedVideo?.lastPlayed && playedVideo)
+    playedVideo.lastPlayed = new Date()
 
   await playedVideo?.save()
 
   res.status(200).send(randomVideo)
 }
 
-export const getPlayedVideos = async (req: Request, res: Response): Promise<void> => {
+export const getPlayedVideos = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const videos = await Video.find({ played: true })
 
   res.status(200).send(videos)
 }
 
-export const uploadVideo = async (req: Request, res: Response): Promise<void> => {
+export const uploadVideo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   res.json({ message: 'File uploaded!' })
 }
 
-export const updateVideo = async (req: Request, res: Response): Promise<any> => {
-  try{
-    const { title, description, url, image, uploadedDate, tags, metadata, playedCount} = req.body
-    const video = await Video.findById(req.body.id) as IVideo
-    if(!video) {
-      return res.status(404).json({message: 'Video not found. '})
+export const updateVideo = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const {
+      title,
+      description,
+      url,
+      image,
+      uploadedDate,
+      tags,
+      metadata,
+      playedCount,
+    } = req.body
+    const video = (await Video.findById(req.body.id)) as IVideo
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found. ' })
     }
-    if(title && title !== video.title) {
+    if (title && title !== video.title) {
       video.title = req.body.title
     }
 
-    if(description && description !== video.description) {
+    if (description && description !== video.description) {
       video.description = description
     }
 
-    if(url  && url !== video.url) {
+    if (url && url !== video.url) {
       video.url = url
     }
 
-    if(image && image !== video.image) {
+    if (image && image !== video.image) {
       video.image = image
     }
 
-    if(uploadedDate && uploadedDate !== video.uploadedDate) {
+    if (uploadedDate && uploadedDate !== video.uploadedDate) {
       video.uploadedDate = uploadedDate
     }
 
-    if(tags && tags !== video.tags) {
+    if (tags && tags !== video.tags) {
       video.tags = tags
     }
 
-    if(metadata && metadata !== video.metadata) {
+    if (metadata && metadata !== video.metadata) {
       video.metadata = metadata
     }
 
-    if(playedCount && playedCount !== video.playCount) {
+    if (playedCount && playedCount !== video.playCount) {
       video.playCount = playedCount
     }
 
-    if(video.isModified()) {
+    if (video.isModified()) {
       await video.save()
-      return res.status(204).json({message: "Updated video!"})
+      return res.status(204).json({ message: 'Updated video!' })
     }
   } catch (e) {
-      return res.status(500).json({message: "Something went wrong."})
+    return res.status(500).json({ message: 'Something went wrong.' })
   }
 }
 
-export const deletePlayedVideos = async (req: Request, res: Response): Promise<void> => {
-  const playedVideos = await Video.find({played: true})
+export const deletePlayedVideos = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const playedVideos = await Video.find({ played: true })
 
   for (const video of playedVideos) {
     video.played = false
     await video.save()
   }
-
-
 
   res.status(204).send()
 }
