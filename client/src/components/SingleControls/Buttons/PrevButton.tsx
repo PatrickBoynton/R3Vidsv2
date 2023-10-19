@@ -3,10 +3,10 @@ import { IVideo } from '../../../interfaces/interfaces'
 import { setVideoSrc, setVideoTitle } from '../../../slices/videoSlice'
 import { useDispatch } from 'react-redux'
 import { setCurrentIndex } from '../../../slices/videoPlayerSlice'
-import { useGetVideosQuery } from '../../../slices/videoApiSlice'
 import { useParams } from 'react-router'
 import Icon from './Icon'
 import { IconStyles } from '../../../utils/styles'
+import useVideoManegment from '../../../hooks/useVideoManegment'
 
 interface Props {
   currentIndex: number
@@ -14,7 +14,9 @@ interface Props {
 
 const PrevButton = ({ currentIndex }: Props) => {
   const { keyword } = useParams()
-  const { data: videos } = useGetVideosQuery({ keyword })
+  const { videos } = useVideoManegment(keyword)
+
+
   const dispatch = useDispatch()
 
   const goToPreviousItem = (currentIndex: number): void => {

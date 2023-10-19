@@ -13,10 +13,15 @@ const VideoItem = ({ video, onVideoClick }: Props) => {
   return (
     <React.Fragment key={video._id || video.title}>
       <ListItem>
-        <Typography variant="h5" color="secondary">{video.title}</Typography>
+        <Typography variant="h5" color="secondary">
+          {video.title}
+        </Typography>
       </ListItem>
       <ListItem>
         <img src={video.image} />
+      </ListItem>
+      <ListItem>
+        <Typography>{String(video.lastPlayed)}</Typography>
       </ListItem>
       <ListItem>
         <Button
@@ -26,7 +31,7 @@ const VideoItem = ({ video, onVideoClick }: Props) => {
         >
           {video.url}
         </Button>
-        <Icon icon={<ControlPointIcon sx={IconStyles}/>} />
+        <Icon icon={<ControlPointIcon sx={IconStyles} />} />
       </ListItem>
     </React.Fragment>
   )
