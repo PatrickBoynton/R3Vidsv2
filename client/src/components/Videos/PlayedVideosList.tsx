@@ -7,16 +7,26 @@ interface Props {
   onVideoClick: any
 }
 
-const PlayedVideosList = ({playedVideos, onVideoClick}: Props) => {
-    return <List>
-      {playedVideos?.map(video => (
-        <VideoItem
-          key={video._id || video.title}
-          video={video}
-          onVideoClick={onVideoClick}
-        />
-      ))}
+const PlayedVideosList = ({ playedVideos, onVideoClick }: Props) => {
+  const played = playedVideos?.slice()
+
+  return (
+    <List>
+      {played
+        ?.sort(
+          (a, b) =>
+            ((new Date(String(b.lastPlayed)).getTime() as number) -
+              new Date(String(a.lastPlayed)).getTime()) as number
+        )
+        .map(video => (
+          <VideoItem
+            key={video._id || video.title}
+            video={video}
+            onVideoClick={onVideoClick}
+          />
+        ))}
     </List>
+  )
 }
 
 export default PlayedVideosList
