@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import { IVideo } from '../interfaces/interfaces'
-import { useGetPlayedVideosQuery, useGetRandomVideoQuery, useGetVideosQuery } from '../slices/videoApiSlice'
+import {
+  useGetPlayedVideosQuery,
+  useGetRandomVideoQuery,
+  useGetVideosQuery,
+} from '../slices/videoApiSlice'
 import { useMutation } from 'react-query'
 import axios from 'axios'
 
@@ -10,12 +14,14 @@ const useVideoManegment = (keyword: any = '') => {
   const [randomVideo, setRandomVideo] = useState<IVideo | null>(null)
   const [playedVideos, setPlayedVideos] = useState<IVideo[] | null>(null)
 
-  const { data, refetch } = useGetVideosQuery({ ...keyword })
+  const { data, refetch } = useGetVideosQuery(keyword)
   const { data: randomVideoData, refetch: reVids } = useGetRandomVideoQuery()
-  const { data: playedVideosData, refetch: rePlayed} = useGetPlayedVideosQuery({ ...keyword })
-  useEffect((): void  => {
-    if(data) setVideos(data)
-  },[data])
+  const { data: playedVideosData, refetch: rePlayed } =
+    useGetPlayedVideosQuery(keyword)
+
+  useEffect((): void => {
+    if (data) setVideos(data)
+  }, [data])
 
   useEffect((): void => {
     if (randomVideoData) {
@@ -23,18 +29,9 @@ const useVideoManegment = (keyword: any = '') => {
     }
   }, [randomVideoData])
 
-  useEffect((): void => {
-     const  refetchVids =  (): void =>  {
-      if (randomVideoData) {
-         reVids()
-      }
-    }
-    refetchVids()
-  }, [])
-
   useEffect(() => {
-    if(playedVideosData) setPlayedVideos(playedVideosData)
-  },[playedVideosData])
+    if (playedVideosData) setPlayedVideos(playedVideosData)
+  }, [playedVideosData])
 
   const uploadVideoMutation = useMutation((formData: FormData) => {
     return axios.put('/upload', formData)
@@ -46,7 +43,7 @@ const useVideoManegment = (keyword: any = '') => {
     playedVideos,
     refetch,
     reVids,
-    rePlayed
+    rePlayed,
   }
 }
 
