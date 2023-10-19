@@ -6,14 +6,11 @@ import Icon from './Icon'
 import { setCurrentIndex } from '../../../slices/videoPlayerSlice'
 import useVideoManegment from '../../../hooks/useVideoManegment'
 
-
-
-
-
 const RandomButton = () => {
-  const { videos, randomVideo, reVids,rePlayed } = useVideoManegment()
-  const dispatch = useDispatch()
+  const { videos, randomVideo, reVids, rePlayed } = useVideoManegment()
+  console.log('RandomButton: ', videos)
 
+  const dispatch = useDispatch()
 
   const onRandomClick = async (): Promise<void> => {
     const index = videos?.findIndex(item => item.title === randomVideo?.title)
@@ -23,7 +20,12 @@ const RandomButton = () => {
     dispatch(setVideoSrc(randomVideo?.url))
     dispatch(setCurrentIndex(index))
   }
-    return <Icon icon={<ShuffleIcon sx={IconStyles} />} onClick={() =>  onRandomClick()} />
+  return (
+    <Icon
+      icon={<ShuffleIcon sx={IconStyles} />}
+      onClick={() => onRandomClick()}
+    />
+  )
 }
 
 export default RandomButton

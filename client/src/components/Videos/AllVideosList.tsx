@@ -7,8 +7,10 @@ interface Props {
   onVideoClick: any
 }
 
-const AllVideosList = ({videos, onVideoClick}: Props) => {
-    return <List>
+const AllVideosList = ({ videos, onVideoClick }: Props) => {
+  
+  return (
+    <List>
       {videos?.map(video => (
         <VideoItem
           key={video._id || video.title}
@@ -17,6 +19,7 @@ const AllVideosList = ({videos, onVideoClick}: Props) => {
         />
       ))}
     </List>
+  )
 }
 
 export default AllVideosList

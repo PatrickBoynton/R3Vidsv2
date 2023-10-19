@@ -1,34 +1,33 @@
 import { TextField } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import { useNavigate, useParams } from 'react-router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ClearIcon from '@mui/icons-material/Clear'
 import { IconStyles } from '../../utils/styles'
 import Icon from './Buttons/Icon'
-import { useGetVideosQuery } from '../../slices/videoApiSlice'
 import useVideoManegment from '../../hooks/useVideoManegment'
-
-
+import { setVideos } from '../../slices/videoFilterSlice'
+import { useDispatch } from 'react-redux'
 
 const SearchBox = () => {
   const navigate = useNavigate()
   const { keyword: urlKeyword } = useParams()
   const [keyword, setKeyword] = useState(urlKeyword || '')
-  const { data: videos, isFetching, refetch } = useGetVideosQuery({ keyword });
-
-  const submitHandler = (e: any, keyword=''): void => {
+  const { refetch } = useVideoManegment(keyword)
+  const submitHandler = async (e: any) => {
     e.preventDefault()
     if (keyword.trim()) {
       navigate(`/search?title=${keyword}`)
+      // await refetch()
       setKeyword('')
-      refetch()
     } else {
       navigate('/')
+      // await refetch()
     }
   }
 
   return (
-    <form onSubmit={e => submitHandler(e, keyword)}>
+    <form onSubmit={submitHandler}>
       <TextField
         id="search"
         label="Search for a Video"
@@ -38,8 +37,15 @@ const SearchBox = () => {
         onChange={e => setKeyword(e.target.value)}
         size="small"
       />
-      <Icon  icon={<SearchIcon sx={IconStyles} />}  type="submit"/>
-      <Icon icon={<ClearIcon sx={IconStyles} />} onClick={submitHandler} />
+      <Icon icon={<SearchIcon sx={IconStyles} />} type="submit" />
+      <Icon
+        icon={<ClearIcon sx={IconStyles} />}
+        onClick={() => {
+          navigate('/')
+          setKeyword('')
+          refetch()
+        }}
+      />
     </form>
   )
 }

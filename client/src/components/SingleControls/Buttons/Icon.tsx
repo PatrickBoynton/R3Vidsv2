@@ -6,7 +6,7 @@ interface Props {
   icon: any
 }
 const Icon = ({ onClick, icon: children, type}: Props) => {
-    return <IconButton  onClick={onClick} type={type}>
+    return <IconButton onClick={onClick} type={type}>
       {children}
     </IconButton>
 }

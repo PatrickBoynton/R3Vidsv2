@@ -15,11 +15,10 @@ import store from './store'
 import { createTheme, ThemeProvider } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-
 const theme = createTheme({
   palette: {
     text: {
-      primary: '#aaaaaa'
+      primary: '#aaaaaa',
     },
     common: {
       black: '#a854a8',
@@ -28,39 +27,37 @@ const theme = createTheme({
     mode: 'dark',
     primary: {
       main: '#a854a8',
-      light: '#aaa'
+      light: '#aaa',
     },
     secondary: {
-      main: '#ffdb60'
-    }
-  }
+      main: '#ffdb60',
+    },
+  },
 })
 
-const router = createBrowserRouter(createRoutesFromElements(
-  <Route path="/" element={<App />}>
-    <Route path="search" element={<App />}>
-      <Route path=":title" element={<App />} />
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<App />}>
+      <Route path="search" element={<App />} />
+      <Route index={true} element={<App />} />
     </Route>
-    <Route index={true} path="/" element={<App />} />
-  </Route>
-))
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+  )
+)
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const queryProvider = new QueryClient()
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme} >
+    <ThemeProvider theme={theme}>
       <Provider store={store}>
         <QueryClientProvider client={queryProvider}>
-           <RouterProvider router={router} />
+          <RouterProvider router={router} />
         </QueryClientProvider>
       </Provider>
     </ThemeProvider>
   </React.StrictMode>
-);
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+reportWebVitals()

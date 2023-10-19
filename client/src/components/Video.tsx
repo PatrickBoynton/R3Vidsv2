@@ -5,14 +5,21 @@ import {
   setVideoPlaying,
   setVideoSrc,
   setVideoTitle,
-  setVideoMetadata, setIsEnded,
+  setVideoMetadata,
+  setIsEnded,
 } from '../slices/videoSlice'
 import Controls from './Controls'
 import { Box, Typography } from '@mui/material'
-import { setCurrentIndex, setCurrentTime, setDuration } from '../slices/videoPlayerSlice'
+import {
+  setCurrentIndex,
+  setCurrentTime,
+  setDuration,
+} from '../slices/videoPlayerSlice'
 import useVideoManegment from '../hooks/useVideoManegment'
+import { useParams } from 'react-router'
 const VideoPlayer = () => {
-  const {videos, randomVideo, refetch} = useVideoManegment({keyword: ""})
+  const { keyword } = useParams()
+  const { videos, randomVideo, refetch } = useVideoManegment(keyword)
 
   const playing: boolean = useSelector((state: any) => state.player.playing)
 
@@ -61,26 +68,28 @@ const VideoPlayer = () => {
   }, [videos, randomVideo?._id, currentIndex, dispatch])
 
   // FOR REACT PLAYER
-  const handleDuration = (duration: number): void  => {
+  const handleDuration = (duration: number): void => {
     dispatch(setDuration(duration))
   }
-const handleProgress = (state: any): void => {
+  const handleProgress = (state: any): void => {
     dispatch(setCurrentTime(state.playedSeconds))
-}
+  }
 
-const handleEnded = (): void => {
+  const handleEnded = (): void => {
     dispatch(setIsEnded(true))
-  handleRandomVideo(
-    randomVideo?.url,
-    randomVideo?.title,
-    randomVideo?.metadata
-  )
-}
+    handleRandomVideo(
+      randomVideo?.url,
+      randomVideo?.title,
+      randomVideo?.metadata
+    )
+  }
 
   return (
     <>
-      <Typography color="secondary" variant='h2'>{title || randomVideo?.title}</Typography>
-      <Box sx={{position: 'relative'}}>
+      <Typography color="secondary" variant="h2">
+        {title || randomVideo?.title}
+      </Typography>
+      <Box sx={{ position: 'relative' }}>
         <Box sx={dimensions}>
           <ReactPlayer
             playing={playing}
@@ -93,10 +102,10 @@ const handleEnded = (): void => {
             onDuration={handleDuration}
             onProgress={handleProgress}
             onEnded={handleEnded}
-            controls />
+            controls
+          />
         </Box>
-        <Controls vidRef={vidRef}
-                  randomVideo={randomVideo} />
+        <Controls vidRef={vidRef} />
       </Box>
     </>
   )

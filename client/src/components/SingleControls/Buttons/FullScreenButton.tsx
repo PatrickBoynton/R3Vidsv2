@@ -1,15 +1,13 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen'
-import { IconButton } from '@mui/material'
 import { useState } from 'react'
 import { IconStyles } from '../../../utils/styles'
 import Icon from './Icon'
 
-
 interface Props {
-    vidRef: any
+  vidRef: any
 }
 
-const FullScreenButton = ({vidRef}: Props) => {
+const FullScreenButton = ({ vidRef }: Props) => {
   const [fullScreen, setFullScreen] = useState(false)
   const handleFullScreenToggle = (e: any): void => {
     setFullScreen(true)
@@ -17,7 +15,12 @@ const FullScreenButton = ({vidRef}: Props) => {
       vidRef.current.getInternalPlayer().requestFullscreen()
     }
   }
-    return <IconButton onClick={handleFullScreenToggle} children={<FullscreenIcon sx={IconStyles} />} />
+  return (
+    <Icon
+      onClick={handleFullScreenToggle}
+      icon={<FullscreenIcon sx={IconStyles} />}
+    />
+  )
 }
 
 export default FullScreenButton
