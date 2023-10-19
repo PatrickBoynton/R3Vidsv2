@@ -25,7 +25,8 @@ const initialState: VideoState = {
   fullScreen: false,
   muted: false,
   playCount: 0,
-  isEnded: false
+  isEnded: false,
+  lastPlayed: undefined,
 }
 
 export const videoSlice = createSlice({
@@ -67,7 +68,7 @@ export const videoSlice = createSlice({
     },
     setIsEnded: (state, action) => {
       state.isEnded = action.payload
-    }
+    },
   },
 })
 
@@ -82,7 +83,7 @@ export const {
   setVideoFullScreen,
   setVideoVolume,
   setVideoMuted,
-  setIsEnded
+  setIsEnded,
 } = videoSlice.actions
 
 export default videoSlice.reducer

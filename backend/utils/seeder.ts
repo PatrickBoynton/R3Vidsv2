@@ -61,7 +61,7 @@ export const seeder = async (dir: string) => {
                         },
                         played: false,
                         playCount: 0,
-                        lastPlayed: null,
+                        lastPlayed: undefined,
                         currentPlayTime: 0
                     }
 

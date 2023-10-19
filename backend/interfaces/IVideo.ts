@@ -12,4 +12,5 @@ export interface IVideo extends Document {
   }
   currentPlayTime: number
   playCount: number
+  lastPlayed?: Date
 }
