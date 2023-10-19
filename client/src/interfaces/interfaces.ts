@@ -13,4 +13,5 @@ export interface IVideo {
   image: string
   played: boolean
   playCount: number
+  lastPlayed: Date | undefined
 }
