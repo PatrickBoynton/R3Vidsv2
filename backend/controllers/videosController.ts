@@ -6,12 +6,22 @@ export const getAllVideos = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const keyword = (req.query.title as string)
-    ? { title: { $regex: req.query.title, $options: 'i' } }
-    : { title: '' }
-  const videos: IVideo[] = await Video.find({ ...keyword })
+  try {
+    const { title } = req.query
+    const keyword = { title: { $regex: title, $options: 'i' } }
 
-  res.status(200).json(videos)
+    if (title !== '' && title !== undefined) {
+      const videos: IVideo[] = await Video.find(keyword)
+
+      res.status(200).json(videos)
+    } else {
+      const videos: IVideo[] = await Video.find({})
+
+      res.status(200).json(videos)
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error finding videos.' })
+  }
 }
 
 export const getAllVideosFiltered = async (
@@ -184,6 +194,7 @@ export const deletePlayedVideos = async (
 
   for (const video of playedVideos) {
     video.played = false
+    video.lastPlayed = undefined
     await video.save()
   }
 
