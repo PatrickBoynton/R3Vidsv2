@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 interface VideoPlayerState {
-  sliderValue: number;
-  currentTime: number;
-  duration: number;
-  playing: boolean;
-  playerWidth: string;
-  currentIndex: number;
-  dimensions: { width: string; height: string };
-  isFullScreen: boolean;
-  isEnded: boolean;
+  sliderValue: number
+  currentTime: number
+  duration: number
+  playing: boolean
+  playerWidth: string
+  currentIndex: number
+  dimensions: { width: string; height: string }
+  isFullScreen: boolean
+  isEnded: boolean
 }
 
 const initialState: VideoPlayerState = {
@@ -19,16 +19,16 @@ const initialState: VideoPlayerState = {
   playing: false,
   playerWidth: '800px',
   currentIndex: 0,
-  dimensions: {width: '100%', height: '100%'},
+  dimensions: { width: '100%', height: '100%' },
   isFullScreen: false,
-  isEnded: false
+  isEnded: false,
 }
 
-const videoPlayerSlice =  createSlice({
-  name: "player",
+const videoPlayerSlice = createSlice({
+  name: 'player',
   initialState,
   reducers: {
-    setSliderValue: (state, action) =>{
+    setSliderValue: (state, action) => {
       state.sliderValue = action.payload
     },
     setCurrentTime: (state, action) => {
@@ -54,8 +54,8 @@ const videoPlayerSlice =  createSlice({
     },
     setIsEnded: (state, action) => {
       state.isEnded = action.payload
-    }
-  }
+    },
+  },
 })
 
 export const {
