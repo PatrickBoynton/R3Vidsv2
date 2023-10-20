@@ -1,4 +1,4 @@
-import { List } from '@mui/material'
+import { Grid, List, ListItem } from '@mui/material'
 import VideoItem from '../SingleControls/VideoItem'
 import { IVideo } from '../../interfaces/interfaces'
 
@@ -8,17 +8,14 @@ interface Props {
 }
 
 const AllVideosList = ({ videos, onVideoClick }: Props) => {
-  
   return (
-    <List>
+    <Grid container spacing={2}>
       {videos?.map(video => (
-        <VideoItem
-          key={video._id || video.title}
-          video={video}
-          onVideoClick={onVideoClick}
-        />
+        <Grid item key={video._id || video.title} xs={12} sm={6} md={4} lg={3}>
+          <VideoItem video={video} onVideoClick={onVideoClick} />
+        </Grid>
       ))}
-    </List>
+    </Grid>
   )
 }
 

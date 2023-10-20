@@ -11,7 +11,14 @@ const PlayedVideosList = ({ playedVideos, onVideoClick }: Props) => {
   const played = playedVideos?.slice()
 
   return (
-    <List>
+    <List
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        overflowX: 'auto',
+        whiteSpace: 'nowrap ',
+      }}
+    >
       {played
         ?.sort(
           (a, b) =>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { IVideo } from '../../interfaces/interfaces'
-import { ListItem, Typography, Button, IconButton } from '@mui/material'
+import { ListItem, Typography, Button, IconButton, Box } from '@mui/material'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import Icon from './Buttons/Icon'
 import { IconStyles } from '../../utils/styles'
@@ -11,7 +11,13 @@ interface Props {
 
 const VideoItem = ({ video, onVideoClick }: Props) => {
   return (
-    <React.Fragment key={video._id || video.title}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+      key={video._id || video.title}
+    >
       <ListItem>
         <Typography variant="h5" color="secondary">
           {video.title}
@@ -33,7 +39,7 @@ const VideoItem = ({ video, onVideoClick }: Props) => {
         </Button>
         <Icon icon={<ControlPointIcon sx={IconStyles} />} />
       </ListItem>
-    </React.Fragment>
+    </Box>
   )
 }
 

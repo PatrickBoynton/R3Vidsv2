@@ -36,32 +36,26 @@ const VideoList = ({ played = false }: Props) => {
 
   return (
     <>
-      <Box display="flex">
-        <Box display="flex" flexDirection="row">
-          <Box>
-            <Typography color="secondary" paragraph>
-              {videos?.length}
-            </Typography>
-            <Typography color="secondary" variant="h3">
-              All Videos
-            </Typography>
-            <AllVideosList videos={videos} onVideoClick={handleVideoStuff} />
-          </Box>
-          <Box>
-            <Box>
-              <Typography paragraph sx={TextColors}>
-                {playedVideos?.length}
-              </Typography>
-            </Box>
-            <Typography color="secondary" variant="h3">
-              Played Videos
-            </Typography>
-            <PlayedVideosList
-              playedVideos={playedVideos}
-              onVideoClick={handleVideoStuff}
-            />
-          </Box>
+      <Box>
+        <Box>
+          <Typography paragraph sx={TextColors}>
+            {playedVideos?.length}
+          </Typography>
         </Box>
+        <Typography color="secondary" variant="h3">
+          Played Videos
+        </Typography>
+        <PlayedVideosList
+          playedVideos={playedVideos}
+          onVideoClick={handleVideoStuff}
+        />
+        <Typography color="secondary" paragraph>
+          {videos?.length}
+        </Typography>
+        <Typography color="secondary" variant="h3">
+          All Videos
+        </Typography>
+        <AllVideosList videos={videos} onVideoClick={handleVideoStuff} />
       </Box>
     </>
   )
