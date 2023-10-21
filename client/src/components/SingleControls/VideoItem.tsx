@@ -1,6 +1,5 @@
-import React from 'react'
 import { IVideo } from '../../interfaces/interfaces'
-import { ListItem, Typography, Button, IconButton, Box } from '@mui/material'
+import { ListItem, Typography, Button, Box } from '@mui/material'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import Icon from './Buttons/Icon'
 import { IconStyles } from '../../utils/styles'
@@ -24,7 +23,7 @@ const VideoItem = ({ video, onVideoClick }: Props) => {
         </Typography>
       </ListItem>
       <ListItem>
-        <img src={video.image} />
+        <img src={video.image} alt={video.title} />
       </ListItem>
       <ListItem>
         <Typography>{String(video.lastPlayed)}</Typography>
