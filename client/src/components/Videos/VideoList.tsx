@@ -30,7 +30,7 @@ const VideoList = ({ played = false }: Props) => {
     dispatch(setVideoSrc(src))
     dispatch(setVideoTitle(title))
     dispatch(setVideoMetadata(duration))
-    // refetch()
+    refetch()
     reVids()
   }
 
@@ -39,11 +39,11 @@ const VideoList = ({ played = false }: Props) => {
       <Box>
         <Box>
           <Typography paragraph sx={TextColors}>
-            {playedVideos?.length}
+            {playedVideos?.length || null}
           </Typography>
         </Box>
         <Typography color="secondary" variant="h3">
-          Played Videos
+          {playedVideos?.length ? 'Played Videos' : null}
         </Typography>
         <PlayedVideosList
           playedVideos={playedVideos}
