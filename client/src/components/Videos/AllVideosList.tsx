@@ -1,4 +1,4 @@
-import { Grid, List, ListItem } from '@mui/material'
+import { Grid } from '@mui/material'
 import VideoItem from '../SingleControls/VideoItem'
 import { IVideo } from '../../interfaces/interfaces'
 

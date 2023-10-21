@@ -8,7 +8,6 @@ import useVideoManegment from '../../../hooks/useVideoManegment'
 
 const RandomButton = () => {
   const { videos, randomVideo, reVids, rePlayed } = useVideoManegment()
-  console.log('RandomButton: ', videos)
 
   const dispatch = useDispatch()
 
