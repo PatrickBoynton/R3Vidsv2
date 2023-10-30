@@ -17,9 +17,10 @@ import {
 } from '../slices/videoPlayerSlice'
 import useVideoManegment from '../hooks/useVideoManegment'
 import { useParams } from 'react-router'
+import { setPlayedVideos } from '../slices/videoFilterSlice'
 const VideoPlayer = () => {
   const { keyword } = useParams()
-  const { videos, randomVideo, refetch } = useVideoManegment(keyword)
+  const { videos, randomVideo, refetch, reVids } = useVideoManegment(keyword)
 
   const playing: boolean = useSelector((state: any) => state.player.playing)
 
@@ -33,16 +34,16 @@ const VideoPlayer = () => {
   const dispatch = useDispatch()
 
   // For the initial random video
-  const handleRandomVideo = (
+  const handleRandomVideo = async (
     url: any = '',
     title: any = '',
     metadata: any = ''
-  ): void => {
+  ): Promise<void> => {
     dispatch(setVideoSrc(url))
     dispatch(setVideoTitle(title))
     dispatch(setVideoMetadata(metadata.duration))
-    dispatch(setVideoPlaying())
-    refetch()
+    await refetch()
+    await reVids()
   }
 
   useEffect((): void => {

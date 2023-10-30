@@ -10,6 +10,7 @@ import { TextColors } from '../../utils/styles'
 import useVideoManegment from '../../hooks/useVideoManegment'
 import PlayedVideosList from './PlayedVideosList'
 import AllVideosList from './AllVideosList'
+import { useEffect } from 'react'
 
 interface Props {
   played?: boolean
@@ -33,7 +34,10 @@ const VideoList = ({ played = false }: Props) => {
     refetch()
     reVids()
   }
-
+  useEffect(() => {
+    refetch()
+    reVids()
+  }, [refetch, reVids])
   return (
     <>
       <Box>

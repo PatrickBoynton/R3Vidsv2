@@ -12,9 +12,11 @@ import {
 } from '@mui/material'
 import ReactPlayer from 'react-player'
 import Controls from '../components/Controls'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import Comments from '../components/Comments'
 
 const TutorialDetailScreen = () => {
+  const [test, setTest] = useState(false)
   const vidRef = useRef(null)
   return (
     <Container maxWidth="lg">
@@ -27,33 +29,46 @@ const TutorialDetailScreen = () => {
               <Controls vidRef={vidRef} />
             </Box>
           </Paper>
-
-          {/* Extra Buttons */}
-          <Paper elevation={3}>
-            <Box p={2} sx={{ display: 'flex' }}>
-              <Button variant="contained" color="secondary" fullWidth>
-                Comment
-              </Button>
-              <Button variant="contained" color="secondary" fullWidth>
-                Overview
-              </Button>
-            </Box>
-          </Paper>
-
-          {/* Course Details */}
-          <Paper elevation={3}>
-            <Box p={2}>
-              <Typography variant="h5" color="secondary">
-                Overview
-              </Typography>
-              <Divider />
-              <Typography variant="body2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                vitae elit libero, a pharetra augue.
-              </Typography>
-            </Box>
-          </Paper>
+          <Box sx={{ display: 'flex' }}>
+            <Button
+              onClick={() => setTest(true)}
+              variant="contained"
+              color="secondary"
+              fullWidth
+            >
+              Comment
+            </Button>
+            <Button
+              onClick={() => setTest(false)}
+              variant="contained"
+              color="secondary"
+              fullWidth
+            >
+              Overview
+            </Button>
+          </Box>
+          {test ? (
+            <Paper elevation={3}>
+              <Box p={2}>
+                <Comments />
+              </Box>
+            </Paper>
+          ) : (
+            <Paper elevation={3}>
+              <Box p={2}>
+                <Typography variant="h5" color="secondary">
+                  Overview
+                </Typography>
+                <Divider />
+                <Typography variant="body2">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                  vitae elit libero, a pharetra augue.
+                </Typography>
+              </Box>
+            </Paper>
+          )}
         </Grid>
+
         <Grid item xs={12} md={4}>
           <Paper elevation={3}>
             {/* Course Content */}
