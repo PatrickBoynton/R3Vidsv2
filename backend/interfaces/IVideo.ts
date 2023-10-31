@@ -1,5 +1,9 @@
 import { Document } from 'mongoose'
 
+export interface MetaData {
+  duration: number
+}
+
 export interface IVideo extends Document {
   title: string
   description?: string
@@ -7,9 +11,7 @@ export interface IVideo extends Document {
   image: string
   uploadedDate: Date
   tags: string[]
-  metadata: {
-    duration: number
-  }
+  metadata: MetaData
   currentPlayTime: number
   playCount: number
   lastPlayed?: Date
