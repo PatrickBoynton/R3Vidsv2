@@ -6,8 +6,6 @@ import ClearIcon from '@mui/icons-material/Clear'
 import { IconStyles } from '../../utils/styles'
 import Icon from './Buttons/Icon'
 import useVideoManegment from '../../hooks/useVideoManegment'
-import { setVideos } from '../../slices/videoFilterSlice'
-import { useDispatch } from 'react-redux'
 
 const SearchBox = () => {
   const navigate = useNavigate()

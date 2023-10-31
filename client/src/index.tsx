@@ -10,8 +10,6 @@ import '@fontsource/roboto/700.css'
 import '@mui/material'
 import { createRoutesFromElements, Route, RouterProvider } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import store from './store'
 import { createTheme, ThemeProvider } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
@@ -48,11 +46,9 @@ const queryProvider = new QueryClient()
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <QueryClientProvider client={queryProvider}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </Provider>
+      <QueryClientProvider client={queryProvider}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>
 )

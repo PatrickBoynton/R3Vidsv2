@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux'
-import { IVideo } from '../interfaces/interfaces'
 import PrevButton from './SingleControls/Buttons/PrevButton'
 import PlayPause from './SingleControls/Buttons/PlayPause'
 import NextButton from './SingleControls/Buttons/NextButton'
@@ -14,13 +12,11 @@ interface Props {
 }
 
 const Controls = ({ vidRef }: Props) => {
-  const currentIndex = useSelector((state: any) => state.player.currentIndex)
-
   return (
     <Box style={divStyles}>
-      <PrevButton currentIndex={currentIndex} />
+      <PrevButton currentIndex={} />
       <PlayPause />
-      <NextButton currentIndex={currentIndex} />
+      <NextButton currentIndex={} />
       <MuteButton vidRef={vidRef} />
       <RandomButton />
       <FullScreenButton vidRef={vidRef} />

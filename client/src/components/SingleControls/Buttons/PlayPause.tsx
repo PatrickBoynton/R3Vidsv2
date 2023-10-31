@@ -1,15 +1,9 @@
 import { PauseCircle, PlayArrow } from '@mui/icons-material'
-import { useDispatch, useSelector } from 'react-redux'
-import { setPlaying } from '../../../slices/videoPlayerSlice'
 import Icon from './Icon'
 import { IconStyles } from '../../../utils/styles'
 
 const PlayPause = () => {
-  const playing = useSelector((state: any) => state.player.playing)
-  const dispatch = useDispatch()
-  const handlePlayPause = (): void => {
-    dispatch(setPlaying(!playing))
-  }
+  const handlePlayPause = (): void => {}
   const playPause = !playing ? (
     <PlayArrow sx={IconStyles} />
   ) : (
