@@ -1,16 +1,16 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen'
-import { useState } from 'react'
 import { IconStyles } from '../../../utils/styles'
 import Icon from './Icon'
+import useVideoPlayerStore from '../../../videoPlayerStore'
 
 interface Props {
   vidRef: any
 }
 
 const FullScreenButton = ({ vidRef }: Props) => {
-  const [fullScreen, setFullScreen] = useState(false)
+  const setFullScreen = useVideoPlayerStore(state => state.setFullScreen)
   const handleFullScreenToggle = (e: any): void => {
-    setFullScreen(true)
+    setFullScreen()
     if (vidRef.current) {
       vidRef.current.getInternalPlayer().requestFullscreen()
     }

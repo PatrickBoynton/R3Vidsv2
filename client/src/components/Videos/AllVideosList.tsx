@@ -1,13 +1,13 @@
 import { Grid } from '@mui/material'
 import VideoItem from '../SingleControls/VideoItem'
-import { IVideo } from '../../interfaces/interfaces'
+import useVideoApiStore from '../../videoApiStore'
 
 interface Props {
-  videos: IVideo[] | null
   onVideoClick: any
 }
 
-const AllVideosList = ({ videos, onVideoClick }: Props) => {
+const AllVideosList = ({ onVideoClick }: Props) => {
+  const videos = useVideoApiStore(state => state.videos)
   return (
     <Grid container spacing={2}>
       {videos?.map(video => (

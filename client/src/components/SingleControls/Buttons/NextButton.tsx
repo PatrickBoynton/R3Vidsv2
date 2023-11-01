@@ -1,23 +1,25 @@
 import SkipNextIcon from '@mui/icons-material/SkipNext'
 import { IVideo } from '../../../interfaces/interfaces'
-import { useParams } from 'react-router'
 import { IconStyles } from '../../../utils/styles'
 import Icon from './Icon'
-import useVideoManegment from '../../../hooks/useVideoManegment'
+import useVideoApiStore from '../../../videoApiStore'
+import useVideoPlayerStore from '../../../videoPlayerStore'
 
-interface Props {
-  currentIndex: number
-}
-
-const NextButton = ({ currentIndex }: Props) => {
-  const { keyword } = useParams()
-  const { videos } = useVideoManegment(keyword)
+const NextButton = () => {
+  const videos = useVideoApiStore(state => state.videos)
+  const currentIndex = useVideoPlayerStore(state => state.currentIndex)
+  const setCurrentIndex = useVideoPlayerStore(state => state.setCurrentIndex)
+  const setTitle = useVideoPlayerStore(state => state.setTitle)
+  const setUrl = useVideoPlayerStore(state => state.setUrl)
 
   const goToNextItem = (currentIndex: number): void => {
     if (videos && videos.length > 0) {
       const newIndex = (currentIndex + 1) % videos.length
+      setCurrentIndex(newIndex)
 
       const nextVideo: IVideo = videos[newIndex]
+      setTitle(nextVideo.title)
+      setUrl(nextVideo.url)
     }
   }
 

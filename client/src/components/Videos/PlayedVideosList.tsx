@@ -1,13 +1,13 @@
-import { IVideo } from '../../interfaces/interfaces'
 import { List } from '@mui/material'
 import VideoItem from '../SingleControls/VideoItem'
+import useVideoApiStore from '../../videoApiStore'
 
 interface Props {
-  playedVideos: IVideo[] | null
   onVideoClick: any
 }
 
-const PlayedVideosList = ({ playedVideos, onVideoClick }: Props) => {
+const PlayedVideosList = ({ onVideoClick }: Props) => {
+  const playedVideos = useVideoApiStore(state => state.playedVideos)
   const played = playedVideos?.slice()
 
   return (

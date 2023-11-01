@@ -1,22 +1,35 @@
-import { useRef } from 'react'
-import ReactPlayer from 'react-player'
+import { useEffect, useRef } from 'react'
+import ReactPlayer, { ReactPlayerProps } from 'react-player'
 import Controls from './Controls'
 import { Box, Typography } from '@mui/material'
+import useVideoApiStore from '../videoApiStore'
+import useVideoPlayerStore from '../videoPlayerStore'
 const VideoPlayer = () => {
+  const randomVideo = useVideoApiStore(state => state.randomVideo)
+  const getRandomVideo = useVideoApiStore(state => state.getRandomVideo)
+  const setCurrentPlayTime = useVideoPlayerStore(
+    state => state.setCurrentPlayTime
+  )
+  const setProgress = useVideoPlayerStore(state => state.setProgress)
   const vidRef = useRef<ReactPlayer>(null)
 
-  // For the initial random video
-  const handleRandomVideo = async (
-    url: any,
-    title: any,
-    metadata: any
-  ): Promise<void> => {}
-
   // FOR REACT PLAYER
-  const handleDuration = (duration: number): void => {}
-  const handleProgress = (state: any): void => {}
+  const handleDuration = (duration: number): void => {
+    setCurrentPlayTime(duration)
+  }
+  const handleProgress = (state: ReactPlayerProps): void => {
+    const { played } = state
+    setProgress(played)
+  }
 
-  const handleEnded = (): void => {}
+  const handleEnded = (): void => {
+    getRandomVideo()
+  }
+
+  // For the initial random video
+  useEffect(() => {
+    getRandomVideo()
+  }, [getRandomVideo])
 
   return (
     <>
@@ -28,7 +41,7 @@ const VideoPlayer = () => {
           <ReactPlayer
             playing={false}
             height="350px"
-            url={}
+            url={randomVideo?.url}
             ref={vidRef}
             muted={true}
             volume={0}

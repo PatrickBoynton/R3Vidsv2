@@ -1,14 +1,16 @@
 import { VolumeDown, VolumeUp } from '@mui/icons-material'
-import { useState } from 'react'
 import Icon from './Icon'
 import { IconStyles } from '../../../utils/styles'
+import useVideoPlayerStore from '../../../videoPlayerStore'
 
 interface Props {
   vidRef: any
 }
 
 const MuteButton = ({ vidRef }: Props) => {
-  const [muted, setMuted] = useState(false)
+  const setMuted = useVideoPlayerStore(state => state.setMuted)
+  const muted = useVideoPlayerStore(state => state.muted)
+
   const handleMute = (): void => {
     setMuted(true)
     if (vidRef.current.getInternalPlayer().muted) {

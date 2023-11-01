@@ -1,13 +1,13 @@
 import Icon from './Icon'
 import { HighlightOff } from '@mui/icons-material'
 import { IconStyles } from '../../../utils/styles'
+import useVideoApiStore from '../../../videoApiStore'
 
 const ClearButton = () => {
+  const deletePlayedVideos = useVideoApiStore(state => state.deletePlayedVideos)
+
   const handleDeletePlayedVideos = async () => {
-    try {
-    } catch (e: any) {
-      console.error(e)
-    }
+    deletePlayedVideos()
   }
   return (
     <Icon

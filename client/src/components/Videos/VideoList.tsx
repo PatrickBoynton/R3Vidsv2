@@ -9,8 +9,6 @@ interface Props {
 }
 
 const VideoList = ({ played = false }: Props) => {
-  const { keyword } = useParams()
-
   const handleVideoStuff = async (
     src: string,
     title: string,
@@ -28,14 +26,14 @@ const VideoList = ({ played = false }: Props) => {
         <Typography color="secondary" variant="h3">
           {null}
         </Typography>
-        <PlayedVideosList playedVideos={} onVideoClick={handleVideoStuff} />
+        <PlayedVideosList onVideoClick={handleVideoStuff} />
         <Typography color="secondary" paragraph>
           {}
         </Typography>
         <Typography color="secondary" variant="h3">
           All Videos
         </Typography>
-        <AllVideosList videos={} onVideoClick={handleVideoStuff} />
+        <AllVideosList onVideoClick={handleVideoStuff} />
       </Box>
     </>
   )

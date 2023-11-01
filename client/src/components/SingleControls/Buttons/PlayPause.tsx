@@ -1,9 +1,14 @@
 import { PauseCircle, PlayArrow } from '@mui/icons-material'
 import Icon from './Icon'
 import { IconStyles } from '../../../utils/styles'
+import useVideoPlayerStore from '../../../videoPlayerStore'
 
 const PlayPause = () => {
-  const handlePlayPause = (): void => {}
+  const playing = useVideoPlayerStore(state => state.playing)
+  const setPlaying = useVideoPlayerStore(state => state.setPlaying)
+  const handlePlayPause = (): void => {
+    setPlaying()
+  }
   const playPause = !playing ? (
     <PlayArrow sx={IconStyles} />
   ) : (
