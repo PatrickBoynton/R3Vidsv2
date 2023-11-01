@@ -1,12 +1,13 @@
 import { Button, Input } from '@mui/material'
 import { FileUpload } from '@mui/icons-material'
-import { useState } from 'react'
 import { TextColors } from '../../utils/styles'
+import useVideoUploadStore from '../../videoUploadStore'
 
 const FileUploader = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  // eslint-disable-next-line no-unused-vars
-  const [_, setVideo] = useState('')
+  const selectedFile = useVideoUploadStore(state => state.selectedFile)
+  const setSelectedFile = useVideoUploadStore(state => state.setSelectedFile)
+  const setVideo = useVideoUploadStore(state => state?.setVideo)
+
   const handleFileSelect = (e: any): void => {
     const file = e.target.files[0]
     setSelectedFile(file)
@@ -17,7 +18,7 @@ const FileUploader = () => {
       const formData: FormData = new FormData()
       formData.append('file', selectedFile as any)
 
-      setVideo()
+      setVideo(selectedFile as any)
     } catch (e: any) {
       console.error(e?.data?.message || e.error)
     }
