@@ -5,22 +5,22 @@ import { useState } from 'react'
 import ClearIcon from '@mui/icons-material/Clear'
 import { IconStyles } from '../../utils/styles'
 import Icon from './Buttons/Icon'
-import useVideoManegment from '../../hooks/useVideoManegment'
+import useVideoApiStore from '../../videoApiStore'
 
 const SearchBox = () => {
   const navigate = useNavigate()
   const { keyword: urlKeyword } = useParams()
   const [keyword, setKeyword] = useState(urlKeyword || '')
-  const { refetch } = useVideoManegment(keyword)
+  const getVideos = useVideoApiStore(state => state.getVideos)
   const submitHandler = async (e: any) => {
     e.preventDefault()
     if (keyword.trim()) {
       navigate(`/search?title=${keyword}`)
-      // await refetch()
+      getVideos(keyword)
       setKeyword('')
     } else {
       navigate('/')
-      // await refetch()
+      getVideos(keyword)
     }
   }
 
@@ -41,7 +41,6 @@ const SearchBox = () => {
         onClick={() => {
           navigate('/')
           setKeyword('')
-          refetch()
         }}
       />
     </form>
