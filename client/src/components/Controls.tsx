@@ -14,9 +14,9 @@ interface Props {
 const Controls = ({ vidRef }: Props) => {
   return (
     <Box style={divStyles}>
-      <PrevButton currentIndex={} />
+      <PrevButton />
       <PlayPause />
-      <NextButton currentIndex={} />
+      <NextButton />
       <MuteButton vidRef={vidRef} />
       <RandomButton />
       <FullScreenButton vidRef={vidRef} />
