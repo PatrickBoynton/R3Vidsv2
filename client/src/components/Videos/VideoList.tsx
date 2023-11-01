@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material'
-import { useParams } from 'react-router'
 import { TextColors } from '../../utils/styles'
 import PlayedVideosList from './PlayedVideosList'
 import AllVideosList from './AllVideosList'
