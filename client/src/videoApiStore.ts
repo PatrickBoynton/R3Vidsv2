@@ -6,14 +6,20 @@ interface VideoApiState {
   videos: IVideo[]
   playedVideos: IVideo[]
   randomVideo: IVideo | null
+  getVideos: (keyword: string) => Promise<void>
+  getPlayedVideos: () => Promise<void>
+  getRandomVideo: () => Promise<void>
+  deletePlayedVideos: () => Promise<void>
 }
 
 const useVideoApiStore = create<VideoApiState>(set => ({
   videos: [],
   playedVideos: [],
   randomVideo: null,
-  getVideos: async () => {
-    const response = await axios.get<IVideo[]>('/api/videos')
+  getVideos: async (keyword: string = '') => {
+    let response = await axios.get<IVideo[]>('/api/videos')
+    if (keyword)
+      response = await axios.get(`/api/videos/search?title=${keyword}`)
     set({ videos: response.data })
   },
   getPlayedVideos: async () => {
