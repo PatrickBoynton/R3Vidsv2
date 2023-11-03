@@ -5,7 +5,7 @@ import { useState } from 'react'
 import ClearIcon from '@mui/icons-material/Clear'
 import { IconStyles } from '../../utils/styles'
 import Icon from './Buttons/Icon'
-import useVideoApiStore from '../../stores/videoApiStore'
+import { useVideoApiStore } from '../../stores/videoApiStore'
 
 const SearchBox = () => {
   const navigate = useNavigate()

@@ -14,7 +14,7 @@ import ReactPlayer from 'react-player'
 import Controls from '../components/Controls'
 import { useRef, useState } from 'react'
 import Comments from '../components/Comments'
-import useVideoApiStore from '../stores/videoApiStore'
+import { useVideoApiStore } from '../stores/videoApiStore'
 
 const TutorialDetailScreen = () => {
   const [test, setTest] = useState(false)

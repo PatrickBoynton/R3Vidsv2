@@ -1,7 +1,7 @@
 import { PauseCircle, PlayArrow } from '@mui/icons-material'
 import Icon from './Icon'
 import { IconStyles } from '../../../utils/styles'
-import useVideoPlayerStore from '../../../stores/videoPlayerStore'
+import { useVideoPlayerStore } from '../../../stores/videoPlayerStore'
 
 const PlayPause = () => {
   const { playing, setPlaying } = useVideoPlayerStore()

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { Metadata } from '../interfaces/interfaces'
 
-interface VideoPlayerState {
+type VideoPlayerState = {
   playing: boolean
   url: string
   volume: number
@@ -15,6 +15,9 @@ interface VideoPlayerState {
   currentPlayTime: number
   playCount: number
   lastPlayed: Date
+}
+
+type Action = {
   setPlaying: () => void
   setUrl: (url: string) => void
   setVolume: (volume: number) => void
@@ -30,7 +33,7 @@ interface VideoPlayerState {
   setLastPlayed: (lastPlayed: Date) => void
 }
 
-const useVideoPlayerStore = create<VideoPlayerState>(set => ({
+export const useVideoPlayerStore = create<VideoPlayerState & Action>(set => ({
   playing: false,
   url: '',
   volume: 0,
@@ -84,5 +87,3 @@ const useVideoPlayerStore = create<VideoPlayerState>(set => ({
     set(() => ({ lastPlayed }))
   },
 }))
-
-export default useVideoPlayerStore

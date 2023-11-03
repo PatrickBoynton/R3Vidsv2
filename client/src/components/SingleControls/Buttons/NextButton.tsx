@@ -2,8 +2,8 @@ import SkipNextIcon from '@mui/icons-material/SkipNext'
 import { IVideo } from '../../../interfaces/interfaces'
 import { IconStyles } from '../../../utils/styles'
 import Icon from './Icon'
-import useVideoApiStore from '../../../stores/videoApiStore'
-import useVideoPlayerStore from '../../../stores/videoPlayerStore'
+import { useVideoApiStore } from '../../../stores/videoApiStore'
+import { useVideoPlayerStore } from '../../../stores/videoPlayerStore'
 
 const NextButton = () => {
   const { videos } = useVideoApiStore()

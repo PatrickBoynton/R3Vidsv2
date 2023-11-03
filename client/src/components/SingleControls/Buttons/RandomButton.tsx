@@ -1,8 +1,8 @@
 import ShuffleIcon from '@mui/icons-material/Shuffle'
 import { IconStyles } from '../../../utils/styles'
 import Icon from './Icon'
-import useVideoApiStore from '../../../stores/videoApiStore'
-import useVideoPlayerStore from '../../../stores/videoPlayerStore'
+import { useVideoApiStore } from '../../../stores/videoApiStore'
+import { useVideoPlayerStore } from '../../../stores/videoPlayerStore'
 
 const RandomButton = () => {
   const { getRandomVideo, randomVideo } = useVideoApiStore()

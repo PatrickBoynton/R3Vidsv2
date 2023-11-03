@@ -1,13 +1,15 @@
 import { create } from 'zustand'
 
-interface InitialUploadState {
+type InitialUploadState = {
   selectedFile: null | File
   videoToUpload: string
+}
+
+type Action = {
   setVideo: (videoToUpload: File) => void
   setSelectedFile: (selectedFile: any) => void
 }
-
-const useVideoUploadStore = create<InitialUploadState>(set => ({
+export const useVideoUploadStore = create<InitialUploadState & Action>(set => ({
   selectedFile: null,
   videoToUpload: '',
   setVideo: (videoToUpload: any) => {
@@ -17,5 +19,3 @@ const useVideoUploadStore = create<InitialUploadState>(set => ({
     set(() => ({ selectedFile }))
   },
 }))
-
-export default useVideoUploadStore

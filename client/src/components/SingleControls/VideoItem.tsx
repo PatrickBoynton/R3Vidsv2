@@ -3,7 +3,7 @@ import { ListItem, Typography, Button, Box } from '@mui/material'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import Icon from './Buttons/Icon'
 import { IconStyles } from '../../utils/styles'
-import useVideoPlayerStore from '../../stores/videoPlayerStore'
+import { useVideoPlayerStore } from '../../stores/videoPlayerStore'
 interface Props {
   video: IVideo
 }

@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material'
 import VideoItem from '../SingleControls/VideoItem'
-import useVideoApiStore from '../../stores/videoApiStore'
+import { useVideoApiStore } from '../../stores/videoApiStore'
 
 const AllVideosList = () => {
   const { videos } = useVideoApiStore()

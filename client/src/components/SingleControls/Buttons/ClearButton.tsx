@@ -1,7 +1,7 @@
 import Icon from './Icon'
 import { HighlightOff } from '@mui/icons-material'
 import { IconStyles } from '../../../utils/styles'
-import useVideoApiStore from '../../../stores/videoApiStore'
+import { useVideoApiStore } from '../../../stores/videoApiStore'
 
 const ClearButton = () => {
   const { deletePlayedVideos } = useVideoApiStore()

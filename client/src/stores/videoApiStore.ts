@@ -2,17 +2,20 @@ import axios from 'axios'
 import { create } from 'zustand'
 import { IVideo } from '../interfaces/interfaces'
 
-interface VideoApiState {
+type VideoApiState = {
   videos: IVideo[]
   playedVideos: IVideo[]
   randomVideo: IVideo | undefined
+}
+
+type Action = {
   getVideos: (keyword: string) => Promise<void>
   getPlayedVideos: () => Promise<void>
   getRandomVideo: () => Promise<void>
   deletePlayedVideos: () => Promise<void>
 }
 
-const useVideoApiStore = create<VideoApiState>(set => ({
+export const useVideoApiStore = create<VideoApiState & Action>(set => ({
   videos: [],
   playedVideos: [],
   randomVideo: undefined,
@@ -35,5 +38,3 @@ const useVideoApiStore = create<VideoApiState>(set => ({
     set({ playedVideos: [] })
   },
 }))
-
-export default useVideoApiStore

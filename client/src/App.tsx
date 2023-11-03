@@ -4,18 +4,19 @@ import RandomScreen from './screens/RandomScreen'
 import TutorialScreen from './screens/TutorialScreen'
 import { useEffect, useState } from 'react'
 import TutorialDetailScreen from './screens/TutorialDetailScreen'
-import useVideoApiStore from './stores/videoApiStore'
+import { useVideoApiStore } from './stores/videoApiStore'
 const App = () => {
   const [isTutorial, setIsTutorial] = useState(false)
   const { getVideos, getRandomVideo } = useVideoApiStore()
 
   useEffect(() => {
-    getVideos('')
-  }, [getVideos])
+    const fetchVideos = async () => {
+      await getVideos('')
 
-  useEffect(() => {
-    getRandomVideo()
-  }, [getRandomVideo])
+      await getRandomVideo()
+    }
+    fetchVideos()
+  }, [getVideos, getRandomVideo])
 
   return (
     <>

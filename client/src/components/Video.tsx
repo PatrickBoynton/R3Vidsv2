@@ -2,8 +2,8 @@ import { useRef } from 'react'
 import ReactPlayer, { ReactPlayerProps } from 'react-player'
 import Controls from './Controls'
 import { Box, Typography } from '@mui/material'
-import useVideoApiStore from '../stores/videoApiStore'
-import useVideoPlayerStore from '../stores/videoPlayerStore'
+import { useVideoApiStore } from '../stores/videoApiStore'
+import { useVideoPlayerStore } from '../stores/videoPlayerStore'
 const VideoPlayer = () => {
   const { randomVideo, getRandomVideo } = useVideoApiStore()
   const { setCurrentPlayTime, setProgress } = useVideoPlayerStore()

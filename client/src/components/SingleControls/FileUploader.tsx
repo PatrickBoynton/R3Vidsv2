@@ -1,7 +1,7 @@
 import { Button, Input } from '@mui/material'
 import { FileUpload } from '@mui/icons-material'
 import { TextColors } from '../../utils/styles'
-import useVideoUploadStore from '../../stores/videoUploadStore'
+import { useVideoUploadStore } from '../../stores/videoUploadStore'
 
 const FileUploader = () => {
   const { selectedFile, setSelectedFile, setVideo } = useVideoUploadStore()

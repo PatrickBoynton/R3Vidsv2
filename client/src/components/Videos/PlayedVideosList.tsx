@@ -1,6 +1,6 @@
 import { List } from '@mui/material'
 import VideoItem from '../SingleControls/VideoItem'
-import useVideoApiStore from '../../stores/videoApiStore'
+import { useVideoApiStore } from '../../stores/videoApiStore'
 
 const PlayedVideosList = () => {
   const { playedVideos } = useVideoApiStore()

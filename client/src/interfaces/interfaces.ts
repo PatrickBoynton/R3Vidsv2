@@ -1,8 +1,8 @@
-export interface Metadata {
+export type Metadata = {
   duration: number
 }
 
-export interface IVideo {
+export type IVideo = {
   _id: string
   description: string
   metadata: Metadata

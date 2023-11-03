@@ -1,7 +1,7 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen'
 import { IconStyles } from '../../../utils/styles'
 import Icon from './Icon'
-import useVideoPlayerStore from '../../../stores/videoPlayerStore'
+import { useVideoPlayerStore } from '../../../stores/videoPlayerStore'
 
 interface Props {
   vidRef: any

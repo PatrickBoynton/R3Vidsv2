@@ -1,7 +1,7 @@
 import { VolumeDown, VolumeUp } from '@mui/icons-material'
 import Icon from './Icon'
 import { IconStyles } from '../../../utils/styles'
-import useVideoPlayerStore from '../../../stores/videoPlayerStore'
+import { useVideoPlayerStore } from '../../../stores/videoPlayerStore'
 
 interface Props {
   vidRef: any
