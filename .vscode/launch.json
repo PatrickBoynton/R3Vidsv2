@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "firefox",
+      "request": "launch",
+      "name": "Debug React App in Firefox",
+      "url": "http://localhost:3000", // Replace with your app's URL
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}

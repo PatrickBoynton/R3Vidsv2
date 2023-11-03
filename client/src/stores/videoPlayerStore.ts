@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Metadata } from './interfaces/interfaces'
+import { Metadata } from '../interfaces/interfaces'
 
 interface VideoPlayerState {
   playing: boolean

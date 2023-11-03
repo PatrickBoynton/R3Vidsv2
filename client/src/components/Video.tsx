@@ -1,17 +1,14 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import ReactPlayer, { ReactPlayerProps } from 'react-player'
 import Controls from './Controls'
 import { Box, Typography } from '@mui/material'
-import useVideoApiStore from '../videoApiStore'
-import useVideoPlayerStore from '../videoPlayerStore'
+import useVideoApiStore from '../stores/videoApiStore'
+import useVideoPlayerStore from '../stores/videoPlayerStore'
 const VideoPlayer = () => {
-  const randomVideo = useVideoApiStore(state => state.randomVideo)
-  const getRandomVideo = useVideoApiStore(state => state.getRandomVideo)
-  const setCurrentPlayTime = useVideoPlayerStore(
-    state => state.setCurrentPlayTime
-  )
-  const setProgress = useVideoPlayerStore(state => state.setProgress)
-  const vidRef = useRef<ReactPlayer>(null)
+  const { randomVideo, getRandomVideo } = useVideoApiStore()
+  const { setCurrentPlayTime, setProgress } = useVideoPlayerStore()
+
+  const vidRef = useRef(null)
 
   // FOR REACT PLAYER
   const handleDuration = (duration: number): void => {
@@ -25,11 +22,6 @@ const VideoPlayer = () => {
   const handleEnded = (): void => {
     getRandomVideo()
   }
-
-  // For the initial random video
-  useEffect(() => {
-    getRandomVideo()
-  }, [getRandomVideo])
 
   return (
     <>
@@ -45,6 +37,7 @@ const VideoPlayer = () => {
             ref={vidRef}
             muted={true}
             volume={0}
+            clear
             autoPlay
             onDuration={handleDuration}
             onProgress={handleProgress}

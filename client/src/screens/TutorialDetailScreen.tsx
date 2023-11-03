@@ -14,10 +14,12 @@ import ReactPlayer from 'react-player'
 import Controls from '../components/Controls'
 import { useRef, useState } from 'react'
 import Comments from '../components/Comments'
+import useVideoApiStore from '../stores/videoApiStore'
 
 const TutorialDetailScreen = () => {
   const [test, setTest] = useState(false)
   const vidRef = useRef(null)
+  const { videos } = useVideoApiStore()
   return (
     <Container maxWidth="lg">
       <Grid container spacing={0}>
@@ -25,7 +27,7 @@ const TutorialDetailScreen = () => {
           <Paper elevation={3}>
             {/* Video Player */}
             <Box p={2}>
-              <ReactPlayer src="" controls ref={vidRef} />
+              <ReactPlayer src={videos[0].url} controls ref={vidRef} />
               <Controls vidRef={vidRef} />
             </Box>
           </Paper>

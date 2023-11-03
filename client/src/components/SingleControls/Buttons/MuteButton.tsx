@@ -1,23 +1,21 @@
 import { VolumeDown, VolumeUp } from '@mui/icons-material'
 import Icon from './Icon'
 import { IconStyles } from '../../../utils/styles'
-import useVideoPlayerStore from '../../../videoPlayerStore'
+import useVideoPlayerStore from '../../../stores/videoPlayerStore'
 
 interface Props {
   vidRef: any
 }
 
 const MuteButton = ({ vidRef }: Props) => {
-  const setMuted = useVideoPlayerStore(state => state.setMuted)
-  const muted = useVideoPlayerStore(state => state.muted)
+  const { setMuted, muted } = useVideoPlayerStore()
 
   const handleMute = (): void => {
-    setMuted(true)
-    if (vidRef.current.getInternalPlayer().muted) {
-      vidRef.current.getInternalPlayer().muted = false
-      setMuted(false)
-    } else {
-      vidRef.current.getInternalPlayer().muted = true
+    setMuted(!muted)
+
+    if (vidRef.current) {
+      const internalPlayer = vidRef.current.getInternalPlayer()
+      if (internalPlayer) internalPlayer.muted = !muted
     }
   }
   return (

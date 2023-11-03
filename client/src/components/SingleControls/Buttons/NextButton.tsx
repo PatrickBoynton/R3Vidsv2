@@ -2,15 +2,13 @@ import SkipNextIcon from '@mui/icons-material/SkipNext'
 import { IVideo } from '../../../interfaces/interfaces'
 import { IconStyles } from '../../../utils/styles'
 import Icon from './Icon'
-import useVideoApiStore from '../../../videoApiStore'
-import useVideoPlayerStore from '../../../videoPlayerStore'
+import useVideoApiStore from '../../../stores/videoApiStore'
+import useVideoPlayerStore from '../../../stores/videoPlayerStore'
 
 const NextButton = () => {
-  const videos = useVideoApiStore(state => state.videos)
-  const currentIndex = useVideoPlayerStore(state => state.currentIndex)
-  const setCurrentIndex = useVideoPlayerStore(state => state.setCurrentIndex)
-  const setTitle = useVideoPlayerStore(state => state.setTitle)
-  const setUrl = useVideoPlayerStore(state => state.setUrl)
+  const { videos } = useVideoApiStore()
+  const { currentIndex, setCurrentIndex, setTitle, setUrl } =
+    useVideoPlayerStore()
 
   const goToNextItem = (currentIndex: number): void => {
     if (videos && videos.length > 0) {

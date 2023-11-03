@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { create } from 'zustand'
-import { IVideo } from './interfaces/interfaces'
+import { IVideo } from '../interfaces/interfaces'
 
 interface VideoApiState {
   videos: IVideo[]
   playedVideos: IVideo[]
-  randomVideo: IVideo | null
+  randomVideo: IVideo | undefined
   getVideos: (keyword: string) => Promise<void>
   getPlayedVideos: () => Promise<void>
   getRandomVideo: () => Promise<void>
@@ -15,8 +15,8 @@ interface VideoApiState {
 const useVideoApiStore = create<VideoApiState>(set => ({
   videos: [],
   playedVideos: [],
-  randomVideo: null,
-  getVideos: async (keyword: string = '') => {
+  randomVideo: undefined,
+  getVideos: async (keyword: string) => {
     let response = await axios.get<IVideo[]>('/api/videos')
     if (keyword)
       response = await axios.get(`/api/videos/search?title=${keyword}`)

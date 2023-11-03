@@ -5,13 +5,13 @@ import { useState } from 'react'
 import ClearIcon from '@mui/icons-material/Clear'
 import { IconStyles } from '../../utils/styles'
 import Icon from './Buttons/Icon'
-import useVideoApiStore from '../../videoApiStore'
+import useVideoApiStore from '../../stores/videoApiStore'
 
 const SearchBox = () => {
   const navigate = useNavigate()
   const { keyword: urlKeyword } = useParams()
   const [keyword, setKeyword] = useState(urlKeyword || '')
-  const getVideos = useVideoApiStore(state => state.getVideos)
+  const { getVideos } = useVideoApiStore()
   const submitHandler = async (e: any) => {
     e.preventDefault()
     if (keyword.trim()) {

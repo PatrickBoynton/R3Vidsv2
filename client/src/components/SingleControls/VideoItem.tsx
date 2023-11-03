@@ -1,14 +1,21 @@
-import { IVideo } from '../../interfaces/interfaces'
+import { IVideo, Metadata } from '../../interfaces/interfaces'
 import { ListItem, Typography, Button, Box } from '@mui/material'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import Icon from './Buttons/Icon'
 import { IconStyles } from '../../utils/styles'
+import useVideoPlayerStore from '../../stores/videoPlayerStore'
 interface Props {
   video: IVideo
-  onVideoClick: (src: string, title: string, duration: number) => void
 }
 
-const VideoItem = ({ video, onVideoClick }: Props) => {
+const VideoItem = ({ video }: Props) => {
+  const { setUrl, setTitle, setMetaData } = useVideoPlayerStore()
+
+  const handleVideoClick = (url: string, title: string, metadata: Metadata) => {
+    setUrl(url)
+    setTitle(title)
+    setMetaData(metadata)
+  }
   return (
     <Box
       sx={{
@@ -31,7 +38,7 @@ const VideoItem = ({ video, onVideoClick }: Props) => {
       <ListItem>
         <Button
           onClick={() => {
-            onVideoClick(video.url, video.title, video.metadata.duration)
+            handleVideoClick(video.url, video.title, video.metadata)
           }}
         >
           {video.url}

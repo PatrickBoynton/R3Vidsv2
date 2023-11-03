@@ -3,7 +3,6 @@ import VideoList from '../components/Videos/VideoList'
 import Util from '../components/Util'
 
 const RandomScreen = () => {
-  
   return (
     <>
       <VideoPlayer />

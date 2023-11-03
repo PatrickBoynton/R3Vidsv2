@@ -1,12 +1,10 @@
 import { Button, Input } from '@mui/material'
 import { FileUpload } from '@mui/icons-material'
 import { TextColors } from '../../utils/styles'
-import useVideoUploadStore from '../../videoUploadStore'
+import useVideoUploadStore from '../../stores/videoUploadStore'
 
 const FileUploader = () => {
-  const selectedFile = useVideoUploadStore(state => state.selectedFile)
-  const setSelectedFile = useVideoUploadStore(state => state.setSelectedFile)
-  const setVideo = useVideoUploadStore(state => state?.setVideo)
+  const { selectedFile, setSelectedFile, setVideo } = useVideoUploadStore()
 
   const handleFileSelect = (e: any): void => {
     const file = e.target.files[0]
