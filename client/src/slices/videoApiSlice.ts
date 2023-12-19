@@ -38,7 +38,7 @@ export const videoApiSlice = apiSlice.injectEndpoints({
     }),
     deletePlayedVideos: builder.mutation({
       query: () => ({
-        url: '/random',
+        url: '/played',
         method: 'DELETE',
       }),
     }),

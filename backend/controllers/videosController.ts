@@ -78,7 +78,7 @@ export const getRandomVideo = async (
   res: Response
 ): Promise<any> => {
   // Gets a random video.
-  const videos = await Video.aggregate([{ $sample: { size: 1 } }])
+  const videos = await Video.aggregate([{ $sample: { size: 200 } }])
   const filterNumber = Number(req.query.filter)
   const condition = req.query.condition
 
@@ -96,7 +96,8 @@ export const getRandomVideo = async (
 
   if (!videos) return res.status(404).send({ message: 'Video not found.' })
 
-  const randomVideo = videos[0]
+  const randomVideo =
+    videos[Math.floor(Math.pow(Math.random(), 1.3) * videos.length)]
 
   const playedVideo = await Video.findById(randomVideo._id)
 
@@ -119,6 +120,27 @@ export const getPlayedVideos = async (
   res.status(200).send(videos)
 }
 
+export const getRandomPlayedVideos = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const videos: IVideo[] = await Video.aggregate([
+    { $match: { played: true } },
+    { $sample: { size: 1 } },
+  ])
+  const video = await Video.findById(videos[0]._id)
+
+  if (video) {
+    video.playCount += 1
+    video.lastPlayed = new Date()
+    await video.save()
+  } else {
+    res.status(404).json({ message: 'No video found.' })
+  }
+
+  res.status(200).json(video)
+}
+
 export const uploadVideo = async (
   req: Request,
   res: Response
@@ -137,50 +159,57 @@ export const updateVideo = async (
       url,
       image,
       uploadedDate,
+      played,
       tags,
       metadata,
-      playedCount,
+      playCount,
     } = req.body
-    const video = (await Video.findById(req.body.id)) as IVideo
+    const video = (await Video.findById(req.params.id)) as IVideo
+
     if (!video) {
       return res.status(404).json({ message: 'Video not found. ' })
     }
-    if (title && title !== video.title) {
-      video.title = req.body.title
+
+    if (title !== undefined) {
+      video.title = title
     }
 
-    if (description && description !== video.description) {
+    if (description !== undefined) {
       video.description = description
     }
 
-    if (url && url !== video.url) {
+    if (url !== undefined) {
       video.url = url
     }
 
-    if (image && image !== video.image) {
+    if (image !== undefined) {
       video.image = image
     }
 
-    if (uploadedDate && uploadedDate !== video.uploadedDate) {
+    if (uploadedDate !== undefined) {
       video.uploadedDate = uploadedDate
     }
 
-    if (tags && tags !== video.tags) {
+    if (tags !== undefined) {
       video.tags = tags
     }
 
-    if (metadata && metadata !== video.metadata) {
+    if (metadata !== undefined) {
       video.metadata = metadata
     }
 
-    if (playedCount && playedCount !== video.playCount) {
-      video.playCount = playedCount
+    if (playCount !== undefined) {
+      video.playCount = playCount
     }
 
-    if (video.isModified()) {
-      await video.save()
-      return res.status(204).json({ message: 'Updated video!' })
+    if (played !== undefined) {
+      video.played = played
     }
+    console.log(req.body)
+    console.log(video)
+    await video.save()
+
+    return res.status(204).json({ message: 'Updated video!' })
   } catch (e) {
     return res.status(500).json({ message: 'Something went wrong.' })
   }
