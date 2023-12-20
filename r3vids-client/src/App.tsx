@@ -6,6 +6,7 @@ import VideoList from './components/VideoList.tsx'
 import PlayedVideoList from './components/PlayedVideoList.tsx'
 import VideoPlayer from './components/VideoPlayer.tsx'
 import { useVideoPropertyStore } from './stores/videoPropertyStore.ts'
+import Navbar from './components/Navbar.tsx'
 
 const App = () => {
 	const {
@@ -32,6 +33,7 @@ const App = () => {
 
 	return (
 		<>
+			<Navbar />
 			<Typography variant="h1" color="text.primary">
 				{title}
 			</Typography>
