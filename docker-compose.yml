@@ -6,4 +6,6 @@ services:
     container_name: r3vidsdb
     restart: always
     ports:
-      - "27017:27017"
+      - '27017:27017'
+    volumes:
+      - ./backend/localdb:/data/db
