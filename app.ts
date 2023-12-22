@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
-import { getIpAddress } from './backend/utils/utils'
-import { seeder } from './backend/utils/seeder'
+import { getIpAddress, runSeeder } from './backend/utils/utils'
 import videosRoutes from './backend/routes/videosRoutes'
 import { connectDb } from './backend/config/db'
 import * as path from 'path'
@@ -30,17 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 const port = 8000
 
 if (process.env.NODE_ENV === 'development') {
-    // 1 hour updates.
-    const updateInterval = 3600 * 1000
-
-    seeder(path.join(__dirname, 'public'))
-
-    // Every  hour make a check to see if anything is differnet.
-    setInterval(() => {
-        console.info('Update has started.')
-        seeder(path.join(__dirname, 'public'))
-        console.info('Update has finished')
-    }, updateInterval)
+    runSeeder(path.join(__dirname, 'public'))
 }
 
 app.use('/api/videos', videosRoutes)

@@ -1,25 +1,9 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { Video } from '../models/videoSchema'
 import { getIpAddress } from './utils'
-import getVideoDurationInSeconds from 'get-video-duration'
-const isVideoFile = (filename: string) => {
-    const vidExtension = '.mp4'
-    const extension = path.extname(filename)
-
-    return vidExtension.includes(extension)
-}
-
-const getVideoDuration = async (dir: string) => {
-    try {
-        const videoDuration = await getVideoDurationInSeconds(dir)
-
-        return videoDuration
-    } catch (e) {
-        console.error('Error getting duration: ', e)
-        throw e
-    }
-}
+import { isVideoFile } from './utils'
+import { Video } from '../models/videoSchema'
+import { createNewVideo, updateVideoUrl } from './controllerUtils'
 
 export const seeder = async (dir: string) => {
     try {
@@ -46,35 +30,14 @@ export const seeder = async (dir: string) => {
                 const title = file.replace(/\.[^/.]+$/, '')
                 const existingVideo = await Video.findOne({ title })
                 const url = existingVideo?.url
-                if (!existingVideo) {
-                    const videoData = {
-                        // Removes the file extension
-                        title,
-                        description: 'Video description',
-                        // This is so that the file can be served over the IP address and be used by other devices
-                        url: `http://${getIpAddress()}:8000/${file}`,
-                        image: 'https://loremflickr.com/320/240',
-                        uploadedDate: new Date(),
-                        tags: [],
-                        metadata: {
-                            duration: await getVideoDuration(filePath),
-                        },
-                        played: false,
-                        playCount: 0,
-                        lastPlayed: undefined,
-                        currentPlayTime: 0,
-                    }
+                const ipPath = `http://${getIpAddress()}:8000/${file}`
 
-                    await Video.create(videoData)
-                } else if (
-                    existingVideo &&
-                    url != `http://${getIpAddress()}:8000/${file}`
-                ) {
-                    const updateIP = {
-                        url: `http://${getIpAddress()}:8000/${file}`,
-                    }
-                    await Video.updateOne({ title }, updateIP)
-                    console.info('Updated video IP address', title)
+                if (!existingVideo) {
+                    await createNewVideo(title, filePath, file)
+                } else if (existingVideo && url != ipPath) {
+                    await updateVideoUrl(title, file)
+                } else if (url == ipPath) {
+                    console.info('Url unchanged. Nothing to update.')
                 }
             }
         }
