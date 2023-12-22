@@ -32,14 +32,14 @@ const VideoCard = ({ video }: Props) => {
 	}
 
 	return (
-		<Card raised>
-			<CardContent color="text.secondary">
-				<Typography variant="h4" color="text.secondary" gutterBottom>
+		<Card sx={{ backgroundColor: '#7667aa', color: 'text.primary' }} raised>
+			<CardContent color="text.primary">
+				<Typography variant="h4" color="text.primary" gutterBottom>
 					{video.title}
 				</Typography>
 				<Divider />
-				<img src="" alt="Video thumbnail" color="text.secondary" />
-				<Typography color="text.secondary">
+				<img src="" alt="Video thumbnail" color="text.primary" />
+				<Typography color="text.primary">
 					{(video.lastPlayed &&
 						new Date(video.lastPlayed).toLocaleTimeString()) ||
 						''}
@@ -48,7 +48,7 @@ const VideoCard = ({ video }: Props) => {
 			<CardActions>
 				<Button
 					size="small"
-					sx={{ color: 'text.secondary' }}
+					sx={{ color: 'text.primary' }}
 					onClick={() => {
 						handleUpdate(video)
 					}}>
