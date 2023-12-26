@@ -6,13 +6,13 @@ import { getIpAddress, getVideoDuration } from './utils'
 export const updateProperties = (
     video: IVideo,
     res: Response,
-    propstoUpdate: Record<string, any>
+    propsToUpdate: Record<string, any>
 ) => {
     if (!video) {
         return res.status(404).json({ message: 'Video not found. ' })
     }
 
-    for (const [key, value] of Object.entries(propstoUpdate)) {
+    for (const [key, value] of Object.entries(propsToUpdate)) {
         if (value !== undefined) {
             ;(video as any)[key] = value
         }
@@ -50,5 +50,4 @@ export const updateVideoUrl = async (title: string, file: string) => {
         url: `http://${getIpAddress()}:8000/${file}`,
     }
     await Video.updateOne({ title }, updateIP)
-    console.info('Updated video IP address', title)
 }
