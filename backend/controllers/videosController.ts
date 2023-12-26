@@ -7,25 +7,29 @@ export const getAllVideos = async (
     req: Request,
     res: Response
 ): Promise<void> => {
-    const { title, type } = req.query
+    const { title, tags } = req.query
+    let videos: IVideo[] = await Video.find({})
     try {
-        let videos: IVideo[] = await Video.find({})
-
         if (req.path.includes('/search')) {
             if (title) {
-                videos = await Video.find({ title })
-                res.status(200).json({ videos })
-            } else if (type) {
-                videos = await Video.find({ type })
-                res.status(200).json({ videos })
+                videos = await Video.find({
+                    title: { $regex: new RegExp(title as string, 'i') },
+                })
+            } else if (tags) {
+                videos = await Video.find({
+                    tags: { $regex: new RegExp(tags as string, 'i') },
+                })
             }
         }
 
-        if (videos.length === 0)
+        if (videos.length === 0) {
+            console.log('No videos found.')
             res.status(404).json({ message: 'No videos found.' })
-
-        res.status(200).json(videos)
+        } else {
+            res.status(200).json(videos)
+        }
     } catch (error) {
+        console.error('An error happened. ', error)
         res.status(500).json({ message: 'Error finding videos.' })
     }
 }
@@ -119,11 +123,12 @@ export const deletePlayedVideos = async (
     res.status(204).send()
 }
 
-export const getTypes = async (_: Request, res: Response) => {
+export const getTags = async (_: Request, res: Response) => {
     try {
         const videoTypes = await Video.distinct('type')
 
-        if (!videoTypes) return res.status(404).json({ message: 'No videos.' })
+        if (!videoTypes || videoTypes.length === 0)
+            return res.status(404).json({ message: 'No tags available.' })
 
         res.status(200).json(videoTypes)
     } catch (error) {
