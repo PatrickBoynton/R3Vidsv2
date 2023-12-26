@@ -10,17 +10,28 @@ export const seeder = async (dir: string) => {
         const files = fs.readdirSync(dir)
 
         if (files.length === 0) {
-            console.log('No files found.')
+            console.info(
+                'No files found. Check to see if the docker container is running.'
+            )
             return
         }
 
         const videoCount = await Video.countDocuments()
+        const testVideo = await Video.findOne({ title: 'AA1' })
+        const testUrl = new URL(testVideo?.url as string)
+        const testIpPath = new URL(
+            `http://${getIpAddress()}:8000/${testVideo?.title}`
+        )
 
-        if (files.length === videoCount) {
-            console.log(
-                'Number of video files in the directory matches the video count in the collection. No new videos to add.'
+        if (testIpPath.origin === testUrl.origin) {
+            console.info('Ip addresses are  the same.')
+        } else {
+            console.warn(
+                'Ip address has changed, please update the agent file.'
             )
-            return
+            console.info(
+                `Go to http://${getIpAddress()}:8000/ to reach the application on your device.`
+            )
         }
 
         for (const file of files) {
@@ -29,20 +40,29 @@ export const seeder = async (dir: string) => {
             if (isVideoFile(file)) {
                 const title = file.replace(/\.[^/.]+$/, '')
                 const existingVideo = await Video.findOne({ title })
-                const url = existingVideo?.url
-                const ipPath = `http://${getIpAddress()}:8000/${file}`
+                const url = new URL(existingVideo?.url as string)
+                const ipPath = new URL(`http://${getIpAddress()}:8000/${file}`)
 
                 if (!existingVideo) {
                     await createNewVideo(title, filePath, file)
-                } else if (existingVideo && url != ipPath) {
+                }
+
+                if (url.origin !== ipPath.origin) {
                     await updateVideoUrl(title, file)
-                } else if (url == ipPath) {
-                    console.info('Url unchanged. Nothing to update.')
+                    console.warn('Please update the agent file.')
                 }
             }
         }
-        console.log('Video count:', videoCount)
-        console.log('Finished.')
+
+        if (files.length === videoCount) {
+            console.info('Video count:', videoCount)
+            console.info(
+                'Number of video files in the directory matches the video count in the collection. No new videos to add.'
+            )
+            return
+        }
+        console.info('Video count:', videoCount)
+        console.info('Finished.')
     } catch (e) {
         console.error('Problem adding the videos to the database: ', e)
     }

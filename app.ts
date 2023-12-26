@@ -1,10 +1,11 @@
 import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
-import { getIpAddress, runSeeder } from './backend/utils/utils'
+import { getIpAddress, runSeeder, updateAgent } from './backend/utils/utils'
 import videosRoutes from './backend/routes/videosRoutes'
 import { connectDb } from './backend/config/db'
-import * as path from 'path'
+import path from 'path'
 import cors from 'cors'
+import  fs from 'fs'
 dotenv.config()
 
 const app = express()
@@ -21,6 +22,8 @@ app.use(
         preflightContinue: false,
     })
 )
+
+updateAgent()
 
 connectDb()
 
