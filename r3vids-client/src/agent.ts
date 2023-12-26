@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from 'axios'
-import { Video } from './types/types.ts'
+import { Video } from './types/types'
+import { getIp } from './utils/utils'
 
-axios.defaults.baseURL = `http://0.0.0.0:8000/api/videos`
+axios.defaults.baseURL = `http://${getIp}:8000/api/videos`
 
 const responseBody = (response: AxiosResponse) => response.data
 
