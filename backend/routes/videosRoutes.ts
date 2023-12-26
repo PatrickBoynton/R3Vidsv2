@@ -5,7 +5,7 @@ import {
     getPlayedVideos,
     getRandomPlayedVideos,
     getRandomVideo,
-    getTypes,
+    getTags,
     updateVideo,
     uploadVideo,
 } from '../controllers/videosController'
@@ -20,7 +20,7 @@ router.delete('/played', deletePlayedVideos)
 router.get('/random', getRandomVideo)
 router.get('/random/played', getRandomPlayedVideos)
 router.get('/played', getPlayedVideos)
-router.get('/types', getTypes)
+router.get('/tags', getTags)
 router.get('/search', getAllVideos)
 router.get('/', getAllVideos)
 
