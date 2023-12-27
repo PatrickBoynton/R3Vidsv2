@@ -125,7 +125,7 @@ export const deletePlayedVideos = async (
 
 export const getTags = async (_: Request, res: Response) => {
     try {
-        const videoTypes = await Video.distinct('type')
+        const videoTypes = await Video.distinct('tags')
 
         if (!videoTypes || videoTypes.length === 0)
             return res.status(404).json({ message: 'No tags available.' })
