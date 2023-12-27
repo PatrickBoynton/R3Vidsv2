@@ -42,7 +42,7 @@ export const useVideoPropertyStore = create<VideoPropertyState>(set => ({
 				metadata: video.metadata,
 				played: video.played,
 				currentPlayTime: video.currentPlayTime,
-				playCount: video.playedCount,
+				playCount: video.playCount,
 				lastPlayed: video.lastPlayed,
 			})
 		}
