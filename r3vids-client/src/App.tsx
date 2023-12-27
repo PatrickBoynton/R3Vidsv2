@@ -1,12 +1,11 @@
 import './App.css'
-import { useVideoApiStore } from './stores/videoApiStore.ts'
+import { useVideoApiStore } from './stores/videoApiStore'
 import { Typography } from '@mui/material'
 import { useEffect } from 'react'
-import VideoList from './components/VideoList.tsx'
-import PlayedVideoList from './components/PlayedVideoList.tsx'
-import VideoPlayer from './components/VideoPlayer.tsx'
-import { useVideoPropertyStore } from './stores/videoPropertyStore.ts'
-import Navbar from './components/Navbar.tsx'
+import VideoList from './components/VideoList'
+import PlayedVideoList from './components/PlayedVideoList'
+import VideoPlayer from './components/VideoPlayer'
+import { useVideoPropertyStore } from './stores/videoPropertyStore'
 
 const App = () => {
 	const {
@@ -19,21 +18,25 @@ const App = () => {
 
 	const { setVideoProperties, title } = useVideoPropertyStore()
 
+	// Added a tiny delay to ensure that two requests were not sent.
+	// If there is no delay the first one appears to
+	// take to long, and another is sent right away.
 	useEffect(() => {
-		getVideos()
-		if (!randomVideo) {
+		const delay = setTimeout(() => {
+			getVideos()
 			getRandomVideo()
-		}
-		getPlayedVideos()
-	}, [getVideos, getRandomVideo, randomVideo, getPlayedVideos])
+			getPlayedVideos()
+		}, 500)
+
+		return () => clearTimeout(delay)
+	}, [getVideos, getRandomVideo, getPlayedVideos])
 
 	useEffect(() => {
-		setVideoProperties(randomVideo)
+		if (randomVideo) setVideoProperties(randomVideo)
 	}, [randomVideo, setVideoProperties])
 
 	return (
 		<>
-			<Navbar />
 			<Typography variant="h1" color="text.primary">
 				{title}
 			</Typography>
