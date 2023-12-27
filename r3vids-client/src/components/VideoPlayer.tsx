@@ -1,16 +1,15 @@
 import ReactPlayer from 'react-player'
 import Controls from './controls/Controls.tsx'
-import { useRef } from 'react'
 import { useVideoPropertyStore } from '../stores/videoPropertyStore.ts'
-import { useVideoApiStore } from '../stores/videoApiStore.ts'
+import { useRef } from 'react'
 
 const VideoPlayer = () => {
 	const { url } = useVideoPropertyStore()
-	const { randomVideo } = useVideoApiStore()
-	const vidRef = useRef(null)
+	const vidRef = useRef<ReactPlayer | null>(null)
+
 	return (
 		<>
-			<ReactPlayer controls url={url || randomVideo?.url} ref={vidRef} />
+			<ReactPlayer controls url={url} ref={vidRef} />
 			<Controls vidRef={vidRef} />
 		</>
 	)

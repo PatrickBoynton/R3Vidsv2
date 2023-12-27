@@ -15,18 +15,15 @@ type Props = {
 }
 
 const Controls = ({ vidRef }: Props) => {
-	const { setCurrentIndex, randomVideo, videos } = useVideoApiStore()
-	const currentIndex = videos?.findIndex(
-		video => video._id === randomVideo?._id,
+	const { currentIndex, randomVideo, videos, setCurrentIndex } =
+		useVideoApiStore()
+	const initialIndex = videos?.findIndex(
+		video => randomVideo?._id === video._id,
 	) as number
-
+	
 	useEffect(() => {
-		if (currentIndex === undefined || currentIndex === null) {
-			setCurrentIndex(0)
-		}
-
-		setCurrentIndex(currentIndex)
-	}, [currentIndex])
+		setCurrentIndex(initialIndex)
+	}, [setCurrentIndex, initialIndex])
 	return (
 		<>
 			<Navigate currentIndex={Number(currentIndex)} />

@@ -41,5 +41,15 @@ export const useVideoApiStore = create<VideoState>(set => ({
 		set({ playedVideos: [] })
 		await agent.Videos.delete()
 	},
-	setCurrentIndex: index => set({ currentIndex: index }),
+	setCurrentIndex: (index: number) => {
+		console.log('currentIndex: ', index)
+		if (index >= 0 && index !== -1) {
+			const nonNegativeIndex = Math.max(0, index)
+
+			set(state => ({
+				...state,
+				currentIndex: nonNegativeIndex,
+			}))
+		}
+	},
 }))
