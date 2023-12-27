@@ -27,8 +27,13 @@ const Videos = {
 	search: (keyword: string) => requests.get(`/search?title=${keyword}`),
 }
 
+const Tags = {
+	list: () => requests.get<string[]>('/tags'),
+}
+
 const agent = {
 	Videos,
+	Tags,
 }
 
 export default agent
