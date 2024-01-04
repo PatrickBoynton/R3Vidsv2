@@ -21,6 +21,7 @@ export const getAllVideos = async (
                 })
             }
         }
+        const seriesTags = await Video.find({ tags: 'series' })
 
         if (videos.length === 0) {
             console.log('No videos found.')
@@ -42,17 +43,17 @@ export const getRandomVideo = async (
 
     if (!videos) return res.status(404).send({ message: 'Video not found.' })
 
-    const randomVideo =
-        videos[Math.floor(Math.pow(Math.random(), 1.3) * videos.length)]
+    const randomVideo = videos[Math.floor(Math.random() * videos.length)]
 
     const playedVideo = await Video.findById(randomVideo._id)
 
-    if (!playedVideo?.played && playedVideo) playedVideo.played = true
-    if (!playedVideo?.playCount && playedVideo) playedVideo.playCount += 1
-    if (!playedVideo?.lastPlayed && playedVideo)
+    if (playedVideo) {
+        playedVideo.played = true
+        playedVideo.playCount += 1
         playedVideo.lastPlayed = new Date()
+        await playedVideo?.save()
+    }
 
-    await playedVideo?.save()
 
     res.status(200).send(randomVideo)
 }
@@ -98,7 +99,7 @@ export const updateVideo = async (
     try {
         const video = (await Video.findById(req.params.id)) as IVideo
 
-        await updateProperties(video, res, req.body)
+        updateProperties(video, res, req.body)
 
         await video.save()
 
@@ -117,6 +118,7 @@ export const deletePlayedVideos = async (
     for (const video of playedVideos) {
         video.played = false
         video.lastPlayed = undefined
+        video.playCount = 0
         await video.save()
     }
 
