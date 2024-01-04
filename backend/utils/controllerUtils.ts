@@ -25,7 +25,6 @@ export const createNewVideo = async (
     file: string
 ) => {
     const videoData = {
-        // Removes the file extension
         title,
         description: 'Video description',
         // This is so that the file can be served over the IP address and be used by other devices
