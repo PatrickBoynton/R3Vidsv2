@@ -25,15 +25,16 @@ const App = () => {
 		const delay = setTimeout(() => {
 			getVideos()
 			getRandomVideo()
-			getPlayedVideos()
 		}, 500)
-
 		return () => clearTimeout(delay)
-	}, [getVideos, getRandomVideo, getPlayedVideos])
+	}, [getVideos, getRandomVideo])
 
 	useEffect(() => {
-		if (randomVideo) setVideoProperties(randomVideo)
-	}, [randomVideo, setVideoProperties])
+		if (randomVideo) {
+			getPlayedVideos()
+			setVideoProperties(randomVideo)
+		}
+	}, [randomVideo, setVideoProperties, getPlayedVideos])
 
 	return (
 		<>
@@ -41,16 +42,19 @@ const App = () => {
 				{title}
 			</Typography>
 			<VideoPlayer />
-			<Typography variant="h1" color="text.primary">
-				{playedVideos && playedVideos?.length > 0
-					? 'Played Videos'
-					: 'No Videos'}
-			</Typography>
-			{playedVideos && playedVideos?.length > 0 && <PlayedVideoList />}
-			<Typography variant="h1" color="text.primary">
-				All Videos
-			</Typography>
-			<VideoList />
+			<>
+				<Typography variant="h1" color="text.primary">
+					{playedVideos && playedVideos?.length > 0
+						? 'Played Videos'
+						: 'No Played Videos'}
+				</Typography>
+				{playedVideos && playedVideos?.length > 0 && <PlayedVideoList />}
+
+				<Typography variant="h1" color="text.primary">
+					All Videos
+				</Typography>
+				<VideoList />
+			</>
 		</>
 	)
 }
