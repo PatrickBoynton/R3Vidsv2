@@ -2,6 +2,7 @@ import { RefObject, SyntheticEvent, useEffect, useState } from 'react'
 import ReactPlayer from 'react-player'
 import { Box, Slider, Typography } from '@mui/material'
 import { useReactPlayerStore } from '../../../stores/reactPlayerStore.ts'
+import { useVideoPropertyStore } from '../../../stores/videoPropertyStore.ts'
 type Props = {
 	vidRef: RefObject<ReactPlayer>
 }
@@ -9,6 +10,7 @@ type Props = {
 const Progress = ({ vidRef }: Props) => {
 	const player = vidRef.current
 	const { progress, setProgress } = useReactPlayerStore()
+	const { metadata } = useVideoPropertyStore()
 	const [sliderValue, setSliderValue] = useState(0)
 	useEffect(() => {
 		setInterval(() => {
@@ -50,7 +52,7 @@ const Progress = ({ vidRef }: Props) => {
 	}
 	return (
 		<Box display="flex">
-			<Typography color="text.primary">0:00</Typography>
+			<Typography color="text.primary">{formatTime(progress)}</Typography>
 			<Slider
 				value={sliderValue}
 				sx={{ width: '30%' }}
@@ -59,7 +61,7 @@ const Progress = ({ vidRef }: Props) => {
 				color="secondary"
 			/>
 			<Typography variant="body2" color="text.primary">
-				{formatTime(progress)}
+				{formatTime(metadata.duration)}
 			</Typography>
 		</Box>
 	)
