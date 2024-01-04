@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useVideoApiStore } from '../../../stores/videoApiStore.ts'
 import { useVideoPropertyStore } from '../../../stores/videoPropertyStore.ts'
 import { Video } from '../../../types/types.ts'
@@ -11,7 +10,8 @@ type Props = {
 }
 
 const Navigate = ({ forward = false, currentIndex }: Props) => {
-	const { videos, setCurrentIndex } = useVideoApiStore()
+	const { videos, setCurrentIndex, getPlayedVideos, updateVideo } =
+		useVideoApiStore()
 	const { setVideoProperties } = useVideoPropertyStore()
 
 	const setVideo = (newIndex: number, newVideo: Video) => {
@@ -28,10 +28,24 @@ const Navigate = ({ forward = false, currentIndex }: Props) => {
 			if (direction) {
 				newIndex = (currentIndex + 1) % (videos.length - 1)
 				const newVideo = videos[newIndex]
+				updateVideo({
+					_id: newVideo._id,
+					lastPlayed: new Date(),
+					played: true,
+					playCount: newVideo.playCount + 1,
+				})
+				getPlayedVideos()
 				setVideo(newIndex, newVideo)
 			} else {
-				newIndex = (currentIndex - 1 + (videos.length - 1)) % videos.length
+				newIndex = (currentIndex + (videos.length - 1)) % videos.length
 				const previousVideo = videos[newIndex]
+				updateVideo({
+					_id: previousVideo._id,
+					lastPlayed: new Date(),
+					played: true,
+					playCount: previousVideo.playCount + 1,
+				})
+				getPlayedVideos()
 				setVideo(newIndex, previousVideo)
 			}
 		}
