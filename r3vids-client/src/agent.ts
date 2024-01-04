@@ -16,7 +16,8 @@ const requests = {
 }
 
 const Videos = {
-	list: () => requests.get<Video[]>('/'),
+	list: (searchTerm = '') =>
+		requests.get<Video[]>(`/search?title=${searchTerm}`),
 	played: () => requests.get<Video[]>('/played/'),
 	random: () => requests.get<Video>('/random'),
 	randomPlayed: () => requests.get<Video>('/random/played'),
