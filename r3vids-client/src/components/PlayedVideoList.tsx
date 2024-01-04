@@ -1,31 +1,26 @@
-import { Box, Grid, List, ListItem } from '@mui/material'
 import VideoCard from './VideoCard.tsx'
 import { useVideoApiStore } from '../stores/videoApiStore.ts'
 import { useEffect } from 'react'
+import { Box } from '@mui/material'
 const PlayedVideoList = () => {
 	const { playedVideos, getPlayedVideos } = useVideoApiStore()
 	useEffect(() => {
 		getPlayedVideos()
 	}, [getPlayedVideos])
 	return (
-		<Box sx={{ overflow: 'none', whiteSpace: 'nowrap' }}>
-			<Grid container spacing={2}>
-				{playedVideos &&
-					playedVideos
-						?.sort(
-							(a, b) =>
-								new Date(b.lastPlayed).getTime() -
-								new Date(a.lastPlayed).getTime(),
-						)
-						.map(video => (
-							<Grid
-								item
-								key={video._id}
-								sx={{ display: 'inline-block', width: 'auto' }}>
-								<VideoCard video={video} />
-							</Grid>
-						))}
-			</Grid>
+		<Box display="flex" sx={{ overflowX: 'auto', maxWidth: '100vw' }}>
+			{playedVideos &&
+				playedVideos
+					?.sort(
+						(a, b) =>
+							new Date(b.lastPlayed).getTime() -
+							new Date(a.lastPlayed).getTime(),
+					)
+					.map(video => (
+						<Box sx={{ flexShrink: 0, marginRight: '8px' }} key={video._id}>
+							<VideoCard video={video} />
+						</Box>
+					))}
 		</Box>
 	)
 }
