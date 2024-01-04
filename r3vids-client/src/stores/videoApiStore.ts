@@ -8,21 +8,26 @@ type VideoState = {
 	randomVideo: Video | null
 	randomPlayedVideo: Video | null
 	currentIndex: number
-	getVideos: () => void
+	searchTerm: string
+	getVideos: (searchTerm?: string) => void
 	getPlayedVideos: () => void
 	getRandomVideo: () => void
 	getRandomPlayedVideo: () => void
 	deletePlayedVideos: () => void
+	updateVideo: (video: Partial<Video>) => void
 	setCurrentIndex: (index: number) => void
 }
+
 export const useVideoApiStore = create<VideoState>(set => ({
 	videos: null,
 	playedVideos: null,
 	randomPlayedVideo: null,
 	currentIndex: 0,
 	randomVideo: null,
-	getVideos: async () => {
-		const videos = await agent.Videos.list()
+	searchTerm: '',
+	getVideos: async (searchTerm = '') => {
+		const videos = await agent.Videos.list(searchTerm)
+		set({ searchTerm })
 		set({ videos })
 	},
 	getPlayedVideos: async () => {
@@ -36,6 +41,9 @@ export const useVideoApiStore = create<VideoState>(set => ({
 	getRandomPlayedVideo: async () => {
 		const randomPlayedVideo = await agent.Videos.randomPlayed()
 		set({ randomPlayedVideo })
+	},
+	updateVideo: (video: Partial<Video>) => {
+		agent.Videos.update(video)
 	},
 	deletePlayedVideos: async () => {
 		set({ playedVideos: [] })
