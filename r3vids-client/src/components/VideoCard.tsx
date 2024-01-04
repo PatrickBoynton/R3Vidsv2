@@ -8,7 +8,6 @@ import {
 } from '@mui/material'
 import { Video } from '../types/types.ts'
 import { useVideoPropertyStore } from '../stores/videoPropertyStore.ts'
-import agent from '../agent.ts'
 import { useVideoApiStore } from '../stores/videoApiStore.ts'
 
 type Props = {
@@ -17,7 +16,7 @@ type Props = {
 
 const VideoCard = ({ video }: Props) => {
 	const { setVideoProperties } = useVideoPropertyStore()
-	const { getPlayedVideos } = useVideoApiStore()
+	const { getPlayedVideos, updateVideo } = useVideoApiStore()
 	const handleUpdate = async (video: Video) => {
 		const { playCount } = video
 		const updatedVideo = {
@@ -26,7 +25,7 @@ const VideoCard = ({ video }: Props) => {
 			played: true,
 			playCount: playCount + 1,
 		}
-		agent.Videos.update(updatedVideo)
+		updateVideo(updatedVideo)
 		getPlayedVideos()
 		setVideoProperties(video)
 	}
@@ -37,17 +36,12 @@ const VideoCard = ({ video }: Props) => {
 				<Typography variant="h4" color="text.primary" gutterBottom>
 					{video.title}
 				</Typography>
-				<Divider />
-				<img src="" alt="Video thumbnail" color="text.primary" />
-				<Typography color="text.primary">
-					{(video.lastPlayed &&
-						new Date(video.lastPlayed).toLocaleTimeString()) ||
-						''}
-				</Typography>
+				<Divider sx={{ backgroundColor: 'text.primary', mb: 5 }} />
+				<img src={video.image} alt="Video thumbnail" color="text.primary" />
 			</CardContent>
 			<CardActions>
 				<Button
-					size="small"
+					size="large"
 					sx={{ color: 'text.primary' }}
 					onClick={() => {
 						handleUpdate(video)
@@ -55,6 +49,11 @@ const VideoCard = ({ video }: Props) => {
 					{video.url}
 				</Button>
 			</CardActions>
+			<Typography color="text" sx={{ marginLeft: 32 }}>
+				{(video.lastPlayed &&
+					new Date(video.lastPlayed).toLocaleTimeString()) ||
+					''}
+			</Typography>
 		</Card>
 	)
 }
