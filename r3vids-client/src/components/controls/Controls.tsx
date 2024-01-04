@@ -9,6 +9,7 @@ import { RefObject, useEffect } from 'react'
 import Navigate from './playerButtons/Navigate.tsx'
 import { useVideoApiStore } from '../../stores/videoApiStore.ts'
 import RandomPlayed from './playerButtons/RandomPlayed.tsx'
+import { Box } from '@mui/material'
 
 type Props = {
 	vidRef: RefObject<ReactPlayer>
@@ -20,22 +21,26 @@ const Controls = ({ vidRef }: Props) => {
 	const initialIndex = videos?.findIndex(
 		video => randomVideo?._id === video._id,
 	) as number
-	
+
 	useEffect(() => {
 		setCurrentIndex(initialIndex)
 	}, [setCurrentIndex, initialIndex])
 	return (
-		<>
-			<Navigate currentIndex={Number(currentIndex)} />
-			<PlayToggle vidRef={vidRef} />
-			<Navigate forward currentIndex={Number(currentIndex)} />
+		<Box display="flex" flexDirection="column">
+			<Box>
+				<Navigate currentIndex={Number(currentIndex)} />
+				<PlayToggle vidRef={vidRef} />
+				<Navigate forward currentIndex={Number(currentIndex)} />
+			</Box>
 			<Progress vidRef={vidRef} />
-			<MuteToggle vidRef={vidRef} />
-			<FullScreenToggle vidRef={vidRef} />
-			<RandomButton />
-			<RandomPlayed />
-			<DeletePlayed />
-		</>
+			<Box>
+				<MuteToggle vidRef={vidRef} />
+				<FullScreenToggle vidRef={vidRef} />
+				<RandomButton />
+				<RandomPlayed />
+				<DeletePlayed />
+			</Box>
+		</Box>
 	)
 }
 
