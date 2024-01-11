@@ -24,12 +24,15 @@ export const createNewVideo = async (
     filePath: string,
     file: string
 ) => {
+    const date = new Date()
+    const timestamp = date.getTime()
     const videoData = {
         title,
         description: 'Video description',
         // This is so that the file can be served over the IP address and be used by other devices
         url: `http://${getIpAddress()}:8000/${file}`,
-        image: 'https://loremflickr.com/320/240',
+        // The timestamp is for generating a uniqe image for the card.
+        image: `https://loremflickr.com/320/240?${timestamp}`,
         uploadedDate: new Date(),
         tags: [],
         metadata: {
