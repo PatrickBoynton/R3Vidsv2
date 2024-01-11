@@ -4,10 +4,11 @@ import { useVideoApiStore } from '../../../stores/videoApiStore.ts'
 import { iconStyles } from '../../../styles.ts'
 
 const DeletePlayed = () => {
-	const { deletePlayedVideos } = useVideoApiStore()
+	const { deletePlayedVideos, getVideos } = useVideoApiStore()
 
-	const handleDeletePlayedVideos = () => {
-		deletePlayedVideos()
+	const handleDeletePlayedVideos = async () => {
+		await deletePlayedVideos()
+		await getVideos()
 	}
 
 	return (
