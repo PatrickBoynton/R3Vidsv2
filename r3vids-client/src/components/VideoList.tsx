@@ -11,13 +11,15 @@ const VideoList = () => {
 			<Grid item>
 				<FilterSearch />
 			</Grid>
-			{videos?.map(video => (
-				<Grid key={video._id} item>
-					<Grid key={video._id}>
-						<VideoCard video={video} />
+			{videos
+				?.sort((a, b) => b.playCount - a.playCount)
+				.map(video => (
+					<Grid key={video._id} item>
+						<Grid key={video._id}>
+							<VideoCard video={video} />
+						</Grid>
 					</Grid>
-				</Grid>
-			))}
+				))}
 		</Grid>
 	)
 }
