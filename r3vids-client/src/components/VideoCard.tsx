@@ -16,7 +16,8 @@ type Props = {
 
 const VideoCard = ({ video }: Props) => {
 	const { setVideoProperties } = useVideoPropertyStore()
-	const { getPlayedVideos, updateVideo } = useVideoApiStore()
+	const { getPlayedVideos, updateVideo, getVideos } = useVideoApiStore()
+
 	const handleUpdate = async (video: Video) => {
 		const { playCount } = video
 		const updatedVideo = {
@@ -25,33 +26,41 @@ const VideoCard = ({ video }: Props) => {
 			played: true,
 			playCount: playCount + 1,
 		}
-		updateVideo(updatedVideo)
-		getPlayedVideos()
-		setVideoProperties(video)
+		// Ignore the warnings, the await very much has an effect.
+		// It fixes some UI problems where it wasn't updating when the video was clicked.
+		await updateVideo(updatedVideo)
+		await setVideoProperties(video)
+		await getPlayedVideos()
+		await getVideos()
 	}
 
 	return (
-		<Card sx={{ backgroundColor: '#7667aa', color: 'text.primary' }} raised>
+		<Card
+			sx={{
+				backgroundColor: '#7667aa',
+				color: 'text.primary',
+				cursor: 'pointer',
+			}}
+			onClick={() => handleUpdate(video)}
+			raised>
 			<CardContent color="text.primary">
 				<Typography variant="h4" color="text.primary" gutterBottom>
 					{video.title}
 				</Typography>
+				<Typography variant="h5">Play Count: {video.playCount}</Typography>
 				<Divider sx={{ backgroundColor: 'text.primary', mb: 5 }} />
 				<img src={video.image} alt="Video thumbnail" color="text.primary" />
 			</CardContent>
 			<CardActions>
-				<Button
-					size="large"
-					sx={{ color: 'text.primary' }}
-					onClick={() => {
-						handleUpdate(video)
-					}}>
+				<Button size="large" sx={{ color: 'text.primary' }}>
 					{video.url}
 				</Button>
 			</CardActions>
 			<Typography color="text" sx={{ marginLeft: 32 }}>
 				{(video.lastPlayed &&
-					new Date(video.lastPlayed).toLocaleTimeString()) ||
+					new Date(video.lastPlayed).toLocaleDateString() +
+						' ' +
+						new Date(video.lastPlayed).toLocaleTimeString()) ||
 					''}
 			</Typography>
 		</Card>
