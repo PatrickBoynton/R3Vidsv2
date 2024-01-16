@@ -18,7 +18,7 @@ const requests = {
 const Videos = {
 	list: (searchTerm = '') =>
 		requests.get<Video[]>(`/search?title=${searchTerm}`),
-	played: () => requests.get<Video[]>('/played/'),
+	played: () => requests.get<Video[]>('/played'),
 	random: () => requests.get<Video>('/random'),
 	randomPlayed: () => requests.get<Video>('/random/played'),
 	update: (video: Partial<Video>) => {
@@ -26,6 +26,7 @@ const Videos = {
 	},
 	delete: () => requests.delete('/played'),
 	search: (keyword: string) => requests.get(`/search?title=${keyword}`),
+	previous: () => requests.get('/previous'),
 }
 
 const Tags = {
