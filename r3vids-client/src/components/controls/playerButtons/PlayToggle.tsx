@@ -4,8 +4,9 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import PauseIcon from '@mui/icons-material/Pause'
 import ReactPlayer from 'react-player'
 import { iconStyles } from '../../../styles.ts'
-import { RefObject } from 'react'
+import { RefObject, useEffect } from 'react'
 import { useVideoApiStore } from '../../../stores/videoApiStore.ts'
+import { useVideoPropertyStore } from '../../../stores/videoPropertyStore.ts'
 
 type Props = {
 	vidRef: RefObject<ReactPlayer>
@@ -13,14 +14,26 @@ type Props = {
 
 const PlayToggle = ({ vidRef }: Props) => {
 	const { togglePlay, playing } = useReactPlayerStore()
-	const { updateVideo } = useVideoApiStore()
+	const { setCurrentPlayTime } = useVideoPropertyStore()
+	const { updateVideo, randomVideo, previousVideo } = useVideoApiStore()
+	const player = vidRef.current?.getInternalPlayer()
 	const handleTogglePlay = (): void => {
-		const player = vidRef.current?.getInternalPlayer()
-
 		if (player && playing) {
 			player.pause()
-			const currentPlayTime = vidRef.current?.getCurrentTime()
-			updateVideo({ currentPlayTime })
+			const currentTime = vidRef.current?.getCurrentTime()
+
+			if (randomVideo) {
+				updateVideo({
+					_id: randomVideo?._id,
+					currentPlayTime: currentTime,
+				})
+			} else if (previousVideo) {
+				updateVideo({
+					_id: previousVideo?._id,
+					currentPlayTime: currentTime,
+				})
+			}
+			setCurrentPlayTime(currentTime as number)
 		} else {
 			player?.play()
 		}
@@ -28,7 +41,7 @@ const PlayToggle = ({ vidRef }: Props) => {
 	}
 	return (
 		<ControlIcon
-			onClick={handleTogglePlay}
+			onClick={() => handleTogglePlay()}
 			icon={
 				!playing ? (
 					<PlayArrowIcon sx={iconStyles} />
