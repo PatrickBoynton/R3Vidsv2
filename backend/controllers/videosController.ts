@@ -54,8 +54,19 @@ export const getRandomVideo = async (
         await playedVideo?.save()
     }
 
-
     res.status(200).send(randomVideo)
+}
+
+export const getPreviousVideo = async (req: Request, res: Response) => {
+    const videos = await Video.find({ played: true }).sort({
+        lastPlayed: 'desc',
+    })
+    if (videos.length > 0) {
+        const video = videos[0]
+        res.send(video)
+    } else {
+        return res.status(404).end()
+    }
 }
 
 export const getPlayedVideos = async (
@@ -103,7 +114,7 @@ export const updateVideo = async (
 
         await video.save()
 
-        return res.status(204).json({ message: 'Updated video!' })
+        return res.status(204).json({ video })
     } catch (e) {
         return res.status(500).json({ message: 'Something went wrong.' })
     }
