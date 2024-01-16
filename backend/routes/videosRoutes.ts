@@ -3,6 +3,7 @@ import {
     deletePlayedVideos,
     getAllVideos,
     getPlayedVideos,
+    getPreviousVideo,
     getRandomPlayedVideos,
     getRandomVideo,
     getTags,
@@ -22,6 +23,7 @@ router.get('/random/played', getRandomPlayedVideos)
 router.get('/played', getPlayedVideos)
 router.get('/tags', getTags)
 router.get('/search', getAllVideos)
+router.get('/previous', getPreviousVideo)
 router.get('/', getAllVideos)
 
 export default router
