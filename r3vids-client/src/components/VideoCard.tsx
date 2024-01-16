@@ -9,15 +9,15 @@ import {
 import { Video } from '../types/types.ts'
 import { useVideoPropertyStore } from '../stores/videoPropertyStore.ts'
 import { useVideoApiStore } from '../stores/videoApiStore.ts'
+import { useEffect } from 'react'
 
 type Props = {
 	video: Video
 }
 
 const VideoCard = ({ video }: Props) => {
+	const { updateVideo, playedVideos } = useVideoApiStore()
 	const { setVideoProperties } = useVideoPropertyStore()
-	const { getPlayedVideos, updateVideo, getVideos } = useVideoApiStore()
-
 	const handleUpdate = async (video: Video) => {
 		const { playCount } = video
 		const updatedVideo = {
@@ -26,13 +26,11 @@ const VideoCard = ({ video }: Props) => {
 			played: true,
 			playCount: playCount + 1,
 		}
-		// Ignore the warnings, the await very much has an effect.
-		// It fixes some UI problems where it wasn't updating when the video was clicked.
-		await updateVideo(updatedVideo)
-		await setVideoProperties(video)
-		await getPlayedVideos()
-		await getVideos()
+		updateVideo(updatedVideo)
+		setVideoProperties(video)
 	}
+
+	useEffect(() => {}, [playedVideos])
 
 	return (
 		<Card
