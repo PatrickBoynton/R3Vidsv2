@@ -1,22 +1,11 @@
-import { useEffect } from 'react'
 import { useVideoApiStore } from '../../../stores/videoApiStore.ts'
-import { useVideoPropertyStore } from '../../../stores/videoPropertyStore.ts'
 import ControlIcon from '../ControlIcon.tsx'
 import CachedIcon from '@mui/icons-material/Cached'
 const RandomPlayed = () => {
-	const { randomPlayedVideo, getRandomPlayedVideo, getPlayedVideos } =
-		useVideoApiStore()
-	const { setVideoProperties } = useVideoPropertyStore()
+	const { getRandomPlayedVideo } = useVideoApiStore()
 	const handleRandomPlayedVideo = () => {
 		getRandomPlayedVideo()
-		getPlayedVideos()
-		setVideoProperties(randomPlayedVideo)
 	}
-
-	useEffect(() => {
-		getPlayedVideos()
-		setVideoProperties(randomPlayedVideo)
-	}, [randomPlayedVideo, getPlayedVideos, setVideoProperties])
 	return (
 		<ControlIcon
 			onClick={handleRandomPlayedVideo}

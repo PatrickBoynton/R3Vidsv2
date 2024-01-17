@@ -2,12 +2,8 @@ import VideoCard from './VideoCard.tsx'
 import { useVideoApiStore } from '../stores/videoApiStore.ts'
 
 import { Box } from '@mui/material'
-import { useEffect } from 'react'
 const PlayedVideoList = () => {
-	const { playedVideos, getPlayedVideos } = useVideoApiStore()
-	useEffect(() => {
-		getPlayedVideos()
-	}, [playedVideos, getPlayedVideos])
+	const { playedVideos } = useVideoApiStore()
 	return (
 		<Box display="flex" sx={{ overflowX: 'auto', maxWidth: '100vw' }}>
 			{playedVideos &&
