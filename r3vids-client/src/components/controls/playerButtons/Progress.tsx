@@ -22,7 +22,7 @@ const Progress = ({ vidRef }: Props) => {
 				setProgress(totalTime)
 			}
 		}, 1000)
-	}, [player])
+	}, [player, setProgress])
 
 	const formatTime = (progress: number) => {
 		if (!player) return '0:00'
