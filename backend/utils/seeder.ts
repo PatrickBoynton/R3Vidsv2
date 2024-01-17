@@ -55,7 +55,6 @@ export const seeder = async (dir: string) => {
             }
         }
         if (files.length === videoCount) {
-            console.info('Video count:', videoCount)
             console.info(
                 'Number of video files in the directory matches the video count in the collection. No new videos to add.'
             )
