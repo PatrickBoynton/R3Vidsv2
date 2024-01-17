@@ -5,10 +5,10 @@ import { useVideoApiStore } from '../../stores/videoApiStore.ts'
 import { Filter } from './Filter.tsx'
 
 const FilterSearch = () => {
-	const { tags, getTags } = useTagsStore()
+	// const { tags, getTags } = useTagsStore()
 	const [_, setSearchTerm] = useState('')
 	const { getVideos } = useVideoApiStore()
-
+	const { getTags, tags } = useTagsStore()
 	useEffect(() => {
 		getTags()
 	}, [getTags])
@@ -28,7 +28,7 @@ const FilterSearch = () => {
 				variant="outlined"
 				fullWidth
 			/>
-			<Filter tags={tags} />
+			{tags && <Filter tags={tags} />}
 		</>
 	)
 }
