@@ -17,7 +17,6 @@ type Props = {
 
 const VideoCard = ({ video }: Props) => {
 	const { updateVideo, playedVideos } = useVideoApiStore()
-	const { setVideoProperties } = useVideoPropertyStore()
 	const handleUpdate = async (video: Video) => {
 		const { playCount } = video
 		const updatedVideo = {
@@ -27,7 +26,6 @@ const VideoCard = ({ video }: Props) => {
 			playCount: playCount + 1,
 		}
 		updateVideo(updatedVideo)
-		setVideoProperties(video)
 	}
 
 	useEffect(() => {}, [playedVideos])
