@@ -9,7 +9,6 @@ import { useVideoPropertyStore } from './stores/videoPropertyStore'
 
 const App = () => {
 	const {
-		randomVideo,
 		getVideos,
 		getRandomVideo,
 		playedVideos,
@@ -17,36 +16,28 @@ const App = () => {
 		getPreviousVideo,
 	} = useVideoApiStore()
 
-	const { setVideoProperties, title } = useVideoPropertyStore()
+	const { title } = useVideoPropertyStore()
 
 	// Added a tiny delay to ensure that two requests were not sent.
 	// If there is no delay the first one appears to
-	// take to long, and another is sent ri	ght away.
+	// take to long, and another is sent right away.
 	useEffect(() => {
 		const delay = setTimeout(() => {
 			if (!previousVideo) getRandomVideo()
 			getVideos()
-		}, 500)
+		}, 50)
 		return () => clearTimeout(delay)
 	}, [getVideos, getRandomVideo, previousVideo])
-
-	useEffect(() => {
-		if (randomVideo) {
-			setVideoProperties(randomVideo)
-		}
-	}, [randomVideo, setVideoProperties])
 
 	useEffect(() => {
 		try {
 			if (!previousVideo) {
 				getPreviousVideo()
-			} else {
-				setVideoProperties(previousVideo)
 			}
 		} catch (e) {
-			console.error('fetchData: ', e)
+			console.error('App getPreviousVideo: ', e)
 		}
-	}, [getPreviousVideo, setVideoProperties, previousVideo])
+	}, [getPreviousVideo, previousVideo])
 
 	return (
 		<>
