@@ -1,3 +1,4 @@
+import { useVideoPropertyStore } from './videoPropertyStore'
 import { create } from 'zustand'
 import agent from '../agent.ts'
 import { Video } from '../types/types.ts'
@@ -30,7 +31,7 @@ export const useVideoApiStore = create<VideoState>(set => ({
 	searchTerm: '',
 	getVideos: async (searchTerm = '') => {
 		const videos = await agent.Videos.list(searchTerm)
-		set(state => ({ ...state, searchTerm }))
+		if (searchTerm.length > 0) set(state => ({ ...state, searchTerm }))
 		set(state => ({ ...state, videos }))
 	},
 	getPlayedVideos: async () => {
@@ -39,35 +40,32 @@ export const useVideoApiStore = create<VideoState>(set => ({
 	},
 	getRandomVideo: async () => {
 		const randomVideo = await agent.Videos.random()
+
 		set(state => ({ ...state, randomVideo }))
+		useVideoApiStore.getState().getPlayedVideos()
+		useVideoApiStore.getState().getVideos()
+		useVideoPropertyStore.getState().setVideoProperties(randomVideo)
 	},
 	getPreviousVideo: async () => {
 		const previousVideo = await agent.Videos.previous()
 		set(state => ({ ...state, previousVideo }))
+		useVideoPropertyStore.getState().setVideoProperties(previousVideo)
 	},
 	getRandomPlayedVideo: async () => {
 		const randomPlayedVideo = await agent.Videos.randomPlayed()
 		set(state => ({ ...state, randomPlayedVideo }))
+		useVideoApiStore.getState().getPlayedVideos()
+		useVideoPropertyStore.getState().setVideoProperties(randomPlayedVideo)
 	},
 	updateVideo: async (video: Partial<Video>) => {
-		agent.Videos.update(video)
-		// Updates the regular list.
-		// Gets and sets the newly updated played list to state.
-		const playedVideos = await agent.Videos.played()
-		if (playedVideos.length > 0) set({ playedVideos })
-
-		set(state => ({
-			...state,
-			videos: state.videos?.map(v =>
-				// If the updated video is equal to the passed in,
-				// spread it to the state, if it is the only one,then add it as is.
-				v._id === video._id ? { ...v, ...video } : v,
-			),
-		}))
+		await agent.Videos.update(video)
+		useVideoApiStore.getState().getPlayedVideos()
+		useVideoApiStore.getState().getVideos()
 	},
 	deletePlayedVideos: async () => {
 		set({ playedVideos: [] })
 		await agent.Videos.delete()
+		useVideoApiStore.getState().getVideos()
 	},
 	setCurrentIndex: (index: number) => {
 		if (index >= 0 && index !== -1) {
