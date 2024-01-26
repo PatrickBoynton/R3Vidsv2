@@ -25,12 +25,13 @@ const Progress = ({ vidRef }: Props) => {
 	}, [player, setProgress])
 
 	const formatTime = (progress: number) => {
-		if (!player) return '0:00'
-		const totalSeconds = player.getDuration()
-		const currentSeconds = (progress / 100) * totalSeconds
-		const minutes = Math.floor(currentSeconds / 60)
-		const seconds = Math.floor(currentSeconds % 60)
-		return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+		const hours = Math.floor(progress / 3600)
+		const minutes = Math.floor((progress % 3600) / 60)
+		const seconds = Math.floor(progress % 60)
+
+		return `${hours.toString().padStart(2, '0')}:${minutes
+			.toString()
+			.padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 	}
 	const handleSliderChange = (
 		__: SyntheticEvent | Event,
