@@ -7,7 +7,6 @@ import {
 	Typography,
 } from '@mui/material'
 import { Video } from '../types/types.ts'
-import { useVideoPropertyStore } from '../stores/videoPropertyStore.ts'
 import { useVideoApiStore } from '../stores/videoApiStore.ts'
 import { useEffect } from 'react'
 
@@ -16,7 +15,7 @@ type Props = {
 }
 
 const VideoCard = ({ video }: Props) => {
-	const { updateVideo, playedVideos } = useVideoApiStore()
+	const { updateVideo, getVideos, getPlayedVideos } = useVideoApiStore()
 	const handleUpdate = async (video: Video) => {
 		const { playCount } = video
 		const updatedVideo = {
@@ -27,9 +26,7 @@ const VideoCard = ({ video }: Props) => {
 		}
 		updateVideo(updatedVideo)
 	}
-
-	useEffect(() => {}, [playedVideos])
-
+	useEffect(() => {}, [getPlayedVideos, getVideos])
 	return (
 		<Card
 			sx={{
