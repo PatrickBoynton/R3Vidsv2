@@ -14,7 +14,7 @@ type VideoPropertyState = {
 	playCount: number
 	lastPlayed: Date | null
 	setCurrentPlayTime: (currentPlayTime: number) => void
-	setVideoProperties: (video: Video | null) => void
+	setVideoProperties: (video: Video | undefined | null) => void
 }
 
 export const useVideoPropertyStore = create<VideoPropertyState>(set => ({
@@ -34,7 +34,7 @@ export const useVideoPropertyStore = create<VideoPropertyState>(set => ({
 	setCurrentPlayTime: (currentPlayTime: number) => {
 		set({ currentPlayTime })
 	},
-	setVideoProperties: (video: Video | null) => {
+	setVideoProperties: (video: Video | null | undefined) => {
 		if (video) {
 			set({
 				title: video.title,
