@@ -9,7 +9,7 @@ type VideoState = {
 	randomVideo: Video | null
 	previousVideo: Video | null
 	randomPlayedVideo: Video | null
-	currentIndex: number
+	currentIndex: number | null
 	searchTerm: string
 	getVideos: (searchTerm?: string) => void
 	getPlayedVideos: () => void
@@ -18,7 +18,7 @@ type VideoState = {
 	getRandomPlayedVideo: () => void
 	deletePlayedVideos: () => void
 	updateVideo: (video: Partial<Video>) => void
-	setCurrentIndex: (index: number) => void
+	setCurrentIndex: (index: number, video?: Video) => void
 }
 
 export const useVideoApiStore = create<VideoState>(set => ({
@@ -57,24 +57,29 @@ export const useVideoApiStore = create<VideoState>(set => ({
 		useVideoApiStore.getState().getPlayedVideos()
 		useVideoPropertyStore.getState().setVideoProperties(randomPlayedVideo)
 	},
-	updateVideo: async (video: Partial<Video>) => {
-		await agent.Videos.update(video)
-		useVideoApiStore.getState().getPlayedVideos()
+	updateVideo: (video: Partial<Video>) => {
+		agent.Videos.update(video)
 		useVideoApiStore.getState().getVideos()
+		if (video.metadata) {
+			useVideoPropertyStore.getState().setVideoProperties(video as Video)
+		}
 	},
 	deletePlayedVideos: async () => {
 		set({ playedVideos: [] })
 		await agent.Videos.delete()
 		useVideoApiStore.getState().getVideos()
 	},
-	setCurrentIndex: (index: number) => {
-		if (index >= 0 && index !== -1) {
-			const nonNegativeIndex = Math.max(0, index)
+	setCurrentIndex: (index: number, video?: Video) => {
+		if (index !== -1) {
+			const videos = useVideoApiStore.getState().videos
+			const currentIndex =
+				(videos?.findIndex(vid => vid._id === video?._id) as number) || index
 
 			set(state => ({
 				...state,
-				currentIndex: nonNegativeIndex,
+				currentIndex,
 			}))
+			useVideoPropertyStore.getState().setVideoProperties(video)
 		}
 	},
 }))
