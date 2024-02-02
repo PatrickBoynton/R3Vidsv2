@@ -14,6 +14,7 @@ const App = () => {
 		playedVideos,
 		previousVideo,
 		getPreviousVideo,
+		videos,
 	} = useVideoApiStore()
 
 	const { title } = useVideoPropertyStore()
@@ -22,12 +23,19 @@ const App = () => {
 	// If there is no delay the first one appears to
 	// take to long, and another is sent right away.
 	useEffect(() => {
-		const delay = setTimeout(() => {
+		const setup = () => {
 			if (!previousVideo) getRandomVideo()
 			getVideos()
-		}, 50)
-		return () => clearTimeout(delay)
-	}, [getVideos, getRandomVideo, previousVideo])
+		}
+		if (!videos) {
+			const delay = setTimeout(() => {
+				console.log('SETUP CALLED')
+
+				setup()
+			}, 50)
+			return () => clearTimeout(delay)
+		}
+	}, [videos, getRandomVideo, getVideos, previousVideo])
 
 	useEffect(() => {
 		try {
