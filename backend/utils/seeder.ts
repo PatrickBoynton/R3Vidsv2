@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { getIpAddress } from './utils'
+import { displayCurrentDateAndTime, getIpAddress } from './utils'
 import { isVideoFile } from './utils'
 import { Video } from '../models/videoSchema'
 import { createNewVideo, updateVideoUrl } from './controllerUtils'
@@ -59,24 +59,10 @@ export const seeder = async (dir: string) => {
                 'Number of video files in the directory matches the video count in the collection. No new videos to add.'
             )
         }
-        // Current date
-        const today = new Date()
-        const year = today.getFullYear()
-        let month = today.getMonth() + 1
-        let day = today.getDate()
 
-        const formattedDay = month + '/' + day + '/' + year
-
-        // Current time:
-        let hours = today.getHours() as any
-        const minutes = today.getMinutes().toString().padStart(2, '0')
-        const seconds = today.getSeconds().toString().padStart(2, '0')
-        hours = (hours % 12 || 12).toString().padStart(2, '0')
         console.info('Video count:', videoCount)
         console.info('Finished.')
-        console.log(
-            `Current date: ${formattedDay} Current time: ${hours}:${minutes}:${seconds}`
-        )
+        console.log(displayCurrentDateAndTime())
     } catch (e) {
         console.error('Problem adding the videos to the database: ', e)
     }
