@@ -1,17 +1,11 @@
 import { TextField, debounce } from '@mui/material'
-import { useTagsStore } from '../../stores/tagsStore.ts'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useVideoApiStore } from '../../stores/videoApiStore.ts'
-import { Filter } from './Filter.tsx'
 
 const FilterSearch = () => {
-	// const { tags, getTags } = useTagsStore()
 	const [_, setSearchTerm] = useState('')
 	const { getVideos } = useVideoApiStore()
-	const { getTags, tags } = useTagsStore()
-	useEffect(() => {
-		getTags()
-	}, [getTags])
+
 	const debouncedSearch = debounce(value => {
 		setSearchTerm(value)
 	}, 500)
@@ -28,7 +22,6 @@ const FilterSearch = () => {
 				variant="outlined"
 				fullWidth
 			/>
-			{tags && <Filter tags={tags} />}
 		</>
 	)
 }
