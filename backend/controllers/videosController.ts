@@ -2,6 +2,7 @@ import { Video } from '../models/videoSchema'
 import { Request, Response } from 'express'
 import { updateProperties } from '../utils/controllerUtils'
 import { IVideo } from '../interfaces/IVideo'
+import { displayCurrentDateAndTime } from '../utils/utils'
 
 export const getAllVideos = async (
     req: Request,
@@ -21,12 +22,15 @@ export const getAllVideos = async (
                 })
             }
         }
-        const seriesTags = await Video.find({ tags: 'series' })
 
         if (videos.length === 0) {
             console.log('No videos found.')
             res.status(404).json({ message: 'No videos found.' })
         } else {
+            console.log(
+                'All videos finished retrieving at: ' +
+                    displayCurrentDateAndTime()
+            )
             res.status(200).json(videos)
         }
     } catch (error) {
@@ -53,7 +57,7 @@ export const getRandomVideo = async (
         playedVideo.lastPlayed = new Date()
         await playedVideo?.save()
     }
-
+    console.log('Random video selected at: ' + displayCurrentDateAndTime())
     res.status(200).send(randomVideo)
 }
 
@@ -63,6 +67,9 @@ export const getPreviousVideo = async (req: Request, res: Response) => {
     })
     if (videos.length > 0) {
         const video = videos[0]
+        console.log(
+            'Previous video selected at: ' + displayCurrentDateAndTime()
+        )
         res.send(video)
     } else {
         return res.status(404).end()
@@ -95,7 +102,7 @@ export const getRandomPlayedVideos = async (
     } else {
         res.status(404).json({ message: 'No video found.' })
     }
-
+    console.log('Random played video at: ' + displayCurrentDateAndTime())
     res.status(200).json(video)
 }
 
@@ -113,7 +120,7 @@ export const updateVideo = async (
         updateProperties(video, res, req.body)
 
         await video.save()
-
+        console.log('Video updated at: ' + displayCurrentDateAndTime())
         return res.status(204).json({ video })
     } catch (e) {
         return res.status(500).json({ message: 'Something went wrong.' })
@@ -132,7 +139,7 @@ export const deletePlayedVideos = async (
         video.playCount = 0
         await video.save()
     }
-
+    console.log('Video deleted at: ' + displayCurrentDateAndTime())
     res.status(204).send()
 }
 
