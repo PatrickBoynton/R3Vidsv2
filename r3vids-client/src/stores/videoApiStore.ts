@@ -31,8 +31,15 @@ export const useVideoApiStore = create<VideoState>(set => ({
 	searchTerm: '',
 	getVideos: async (searchTerm = '') => {
 		const videos = await agent.Videos.list(searchTerm)
-		if (searchTerm.length > 0) set(state => ({ ...state, searchTerm }))
-		set(state => ({ ...state, videos }))
+		const playedVideos = useVideoApiStore.getState().playedVideos
+		if (searchTerm.length > 0 || videos) {
+			set(state => ({
+				...state,
+				searchTerm,
+				videos,
+				playedVideos,
+			}))
+		}
 	},
 	getPlayedVideos: async () => {
 		const playedVideos = await agent.Videos.played()
@@ -41,33 +48,35 @@ export const useVideoApiStore = create<VideoState>(set => ({
 	getRandomVideo: async () => {
 		const randomVideo = await agent.Videos.random()
 
-		set(state => ({ ...state, randomVideo }))
-		useVideoApiStore.getState().getPlayedVideos()
-		useVideoApiStore.getState().getVideos()
 		useVideoPropertyStore.getState().setVideoProperties(randomVideo)
+
+		set(state => ({ ...state, randomVideo }))
 	},
 	getPreviousVideo: async () => {
 		const previousVideo = await agent.Videos.previous()
-		set(state => ({ ...state, previousVideo }))
+		const videos = useVideoApiStore.getState().videos
+		const playedVideos = useVideoApiStore.getState().playedVideos
+
+		set(state => ({ ...state, previousVideo, videos, playedVideos }))
 		useVideoPropertyStore.getState().setVideoProperties(previousVideo)
 	},
 	getRandomPlayedVideo: async () => {
 		const randomPlayedVideo = await agent.Videos.randomPlayed()
+
 		set(state => ({ ...state, randomPlayedVideo }))
-		useVideoApiStore.getState().getPlayedVideos()
+
 		useVideoPropertyStore.getState().setVideoProperties(randomPlayedVideo)
 	},
-	updateVideo: (video: Partial<Video>) => {
-		agent.Videos.update(video)
-		useVideoApiStore.getState().getVideos()
+	updateVideo: async (video: Partial<Video>) => {
+		await agent.Videos.update(video)
 		if (video.metadata) {
 			useVideoPropertyStore.getState().setVideoProperties(video as Video)
 		}
+		set(state => ({ ...state }))
 	},
 	deletePlayedVideos: async () => {
-		set({ playedVideos: [] })
 		await agent.Videos.delete()
-		useVideoApiStore.getState().getVideos()
+		set(state => ({ ...state, playedVideos: [] }))
 	},
 	setCurrentIndex: (index: number, video?: Video) => {
 		if (index !== -1) {
