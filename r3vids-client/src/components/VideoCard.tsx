@@ -8,25 +8,32 @@ import {
 } from '@mui/material'
 import { Video } from '../types/types.ts'
 import { useVideoApiStore } from '../stores/videoApiStore.ts'
-import { useEffect } from 'react'
 
 type Props = {
 	video: Video
 }
 
 const VideoCard = ({ video }: Props) => {
-	const { updateVideo, getVideos, getPlayedVideos } = useVideoApiStore()
+	const { updateVideo } = useVideoApiStore()
 	const handleUpdate = async (video: Video) => {
 		const { playCount } = video
 		const updatedVideo = {
 			_id: video._id,
-			lastPlayed: new Date(),
+			title: video.title,
+			description: video.description,
+			url: video.url,
+			image: video.image,
+			uploadDate: video.uploadDate,
+			tags: video.tags,
+			metadata: video.metadata,
 			played: true,
+			currentPlayTime: video.currentPlayTime,
+			lastPlayed: new Date(),
 			playCount: playCount + 1,
 		}
-		updateVideo(updatedVideo)
+		await updateVideo(updatedVideo)
 	}
-	useEffect(() => {}, [getPlayedVideos, getVideos])
+
 	return (
 		<Card
 			sx={{
