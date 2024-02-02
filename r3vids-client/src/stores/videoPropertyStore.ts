@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { MetaData, Video } from '../types/types.ts'
+import { useVideoApiStore } from './videoApiStore.ts'
 
 type VideoPropertyState = {
 	title: string
@@ -49,6 +50,8 @@ export const useVideoPropertyStore = create<VideoPropertyState>(set => ({
 				playCount: video.playCount,
 				lastPlayed: video.lastPlayed,
 			})
+			useVideoApiStore.getState().getPlayedVideos()
+			useVideoApiStore.getState().getVideos()
 		}
 	},
 }))
