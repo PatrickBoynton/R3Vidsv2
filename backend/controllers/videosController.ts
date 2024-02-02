@@ -40,12 +40,40 @@ export const getAllVideos = async (
 }
 
 export const getRandomVideo = async (
-    _: Request,
+    req: Request,
     res: Response
 ): Promise<any> => {
-    const videos = await Video.aggregate([{ $sample: { size: 200 } }])
+    let videos = await Video.aggregate([{ $sample: { size: 200 } }])
 
-    if (!videos) return res.status(404).send({ message: 'Video not found.' })
+    const isReqEmpty = Object.keys(req.query).length === 0
+    const { filter } = req.query
+
+    if (!isReqEmpty && filter === 'lte') {
+        videos = await Video.aggregate([
+            { $sample: { size: 200 } },
+            {
+                $match: {
+                    'metadata.duration': {
+                        $lte: parseInt(req.query.duration as string),
+                    },
+                },
+            },
+        ])
+    } else if (!isReqEmpty && filter === 'gte') {
+        videos = await Video.aggregate([
+            { $sample: { size: 200 } },
+            {
+                $match: {
+                    'metadata.duration': {
+                        $gte: parseInt(req.query.duration as string),
+                    },
+                },
+            },
+        ])
+    }
+
+    if (!videos || videos.length === 0)
+        return res.status(404).send({ message: 'Video not found.' })
 
     const randomVideo = videos[Math.floor(Math.random() * videos.length)]
 
