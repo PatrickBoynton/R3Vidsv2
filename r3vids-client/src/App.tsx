@@ -14,6 +14,8 @@ const App = () => {
 		playedVideos,
 		previousVideo,
 		getPreviousVideo,
+		randomFilterDuration,
+		randomFilterLength,
 		videos,
 	} = useVideoApiStore()
 
@@ -24,7 +26,8 @@ const App = () => {
 	// take to long, and another is sent right away.
 	useEffect(() => {
 		const setup = () => {
-			if (!previousVideo) getRandomVideo()
+			if (!previousVideo)
+				getRandomVideo(randomFilterDuration, randomFilterLength)
 			getVideos()
 		}
 		if (!videos) {
@@ -35,7 +38,7 @@ const App = () => {
 			}, 50)
 			return () => clearTimeout(delay)
 		}
-	}, [videos, getRandomVideo, getVideos, previousVideo])
+	}, [videos, getRandomVideo, getVideos, previousVideo, randomFilterDuration, randomFilterLength])
 
 	useEffect(() => {
 		try {
