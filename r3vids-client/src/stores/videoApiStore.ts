@@ -11,14 +11,18 @@ type VideoState = {
 	randomPlayedVideo: Video | null
 	currentIndex: number | null
 	searchTerm: string
+	randomFilterDuration: string
+	randomFilterLength: string
 	getVideos: (searchTerm?: string) => void
 	getPlayedVideos: () => void
-	getRandomVideo: () => void
+	getRandomVideo: (duration: string, length: string) => void
 	getPreviousVideo: () => void
 	getRandomPlayedVideo: () => void
 	deletePlayedVideos: () => void
 	updateVideo: (video: Partial<Video>) => void
 	setCurrentIndex: (index: number, video?: Video) => void
+	setRandomFilterDuration: (randomFilterDuration: string) => void
+	setRandomFilterLength: (randomFilterLength: string) => void
 }
 
 export const useVideoApiStore = create<VideoState>(set => ({
@@ -29,6 +33,8 @@ export const useVideoApiStore = create<VideoState>(set => ({
 	randomVideo: null,
 	previousVideo: null,
 	searchTerm: '',
+	randomFilterDuration: '',
+	randomFilterLength: '',
 	getVideos: async (searchTerm = '') => {
 		const videos = await agent.Videos.list(searchTerm)
 		const playedVideos = useVideoApiStore.getState().playedVideos
@@ -45,8 +51,8 @@ export const useVideoApiStore = create<VideoState>(set => ({
 		const playedVideos = await agent.Videos.played()
 		set(state => ({ ...state, playedVideos }))
 	},
-	getRandomVideo: async () => {
-		const randomVideo = await agent.Videos.random()
+	getRandomVideo: async (duration: string, length: string) => {
+		const randomVideo = await agent.Videos.random(duration, length)
 
 		useVideoPropertyStore.getState().setVideoProperties(randomVideo)
 
@@ -90,5 +96,11 @@ export const useVideoApiStore = create<VideoState>(set => ({
 			}))
 			useVideoPropertyStore.getState().setVideoProperties(video)
 		}
+	},
+	setRandomFilterDuration: (randomFilterDuration: string) => {
+		set(state => ({ ...state, randomFilterDuration }))
+	},
+	setRandomFilterLength: (randomFilterLength: string) => {
+		set(state => ({ ...state, randomFilterLength }))
 	},
 }))

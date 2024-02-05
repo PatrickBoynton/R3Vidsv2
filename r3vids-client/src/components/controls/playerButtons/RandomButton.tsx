@@ -4,9 +4,10 @@ import ShuffleIcon from '@mui/icons-material/Shuffle'
 import { iconStyles } from '../../../styles.ts'
 
 const RandomButton = () => {
-	const { getRandomVideo } = useVideoApiStore()
+	const { getRandomVideo, randomFilterDuration, randomFilterLength } =
+		useVideoApiStore()
 	const handleGetRandomVideo = () => {
-		getRandomVideo()
+		getRandomVideo(randomFilterDuration, randomFilterLength)
 	}
 	return (
 		<ControlIcon

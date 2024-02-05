@@ -10,6 +10,7 @@ import Navigate from './playerButtons/Navigate/Navigate.tsx'
 import { useVideoApiStore } from '../../stores/videoApiStore.ts'
 import RandomPlayed from './playerButtons/RandomPlayed.tsx'
 import { Box } from '@mui/material'
+import { RandomTimeFilter } from '../RandomTimeFilter.tsx'
 
 type Props = {
 	vidRef: RefObject<ReactPlayer>
@@ -36,6 +37,7 @@ const Controls = ({ vidRef }: Props) => {
 			<Box>
 				<MuteToggle vidRef={vidRef} />
 				<FullScreenToggle vidRef={vidRef} />
+				<RandomTimeFilter />
 				<RandomButton />
 				<RandomPlayed />
 				<DeletePlayed />
