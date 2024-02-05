@@ -19,7 +19,10 @@ const Videos = {
 	list: (searchTerm = '') =>
 		requests.get<Video[]>(`/search?title=${searchTerm}`),
 	played: () => requests.get<Video[]>('/played'),
-	random: () => requests.get<Video>('/random'),
+	random: (duration?: string, filter?: string) =>
+		filter && duration
+			? requests.get<Video>(`/random?duration=${duration}&filter=${filter}`)
+			: requests.get<Video>('/random'),
 	randomPlayed: () => requests.get<Video>('/random/played'),
 	update: (video: Partial<Video>) => {
 		requests.patch<Video>(`/edit/${video._id}`, video)
