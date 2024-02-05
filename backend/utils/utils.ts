@@ -3,6 +3,8 @@ import * as os from 'os'
 import * as path from 'path'
 import { seeder } from './seeder'
 import fs from 'fs'
+import { Video } from '../models/videoSchema'
+import { createNewVideo, updateVideoUrl } from './controllerUtils'
 
 export const randomNumber = (min: number, max: number): number =>
     min + Math.round(Math.random() * (max - min))
@@ -86,4 +88,48 @@ export const displayCurrentDateAndTime = (): string => {
     hours = (hours % 12 || 12).toString().padStart(2, '0')
 
     return `Current Day: ${formattedDay} Current time: ${hours}:${minutes}:${seconds}`
+}
+
+export const checkFilesExist = (files: string[]) => {
+    if (files.length === 0) {
+        console.info(
+            'No files found. Check to see if the docker container is running.'
+        )
+        return false
+    }
+    return true
+} 
+
+export const checkIpAddresses = (testUrl: URL, testIpPath: URL) => {
+    if(testUrl) {
+        if(testIpPath.origin === testUrl.origin) {
+            console.info('Ip addresses are  the same.')
+        } else {
+            console.warn(
+                'Ip address has changed, please update the agent file.'
+            )
+            console.info(
+                `Go to http://${getIpAddress()}:5173/ to reach the application on your device.`
+            )
+        }
+    }
+}
+
+export const processFiles = async (files: string[], dir: string) => {
+    for(const file of files) {
+        const title = file.replace(/\.[^/.]+$/, '')
+        const existingVideo = await Video.findOne({ title })
+        const filePath = path.join(dir, file)
+        if(isVideoFile(file)) {
+            const url = new URL((existingVideo?.url as string) || `http://${getIpAddress()}:8000/${file}`)       
+            const ipPath = new URL(`http://${getIpAddress()}:8000/${file}`)
+            if(!existingVideo) {
+                await createNewVideo(title, filePath, file)
+            }
+
+            if(url.origin !== ipPath.origin) {
+                await updateVideoUrl(title, file)
+            }
+        }
+    }
 }
