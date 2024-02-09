@@ -18,7 +18,7 @@ export const seeder = async (dir: string) => {
         if (!checkFilesExist(files)) return
         checkIpAddresses(testUrl as URL, testIpPath)
         await processFiles(files, dir)
-
+        
         if(files.length === videoCount) {
             console.info('Number of video files in the directory matches the video count in the collection. No new videos to add.')
         }

@@ -116,6 +116,8 @@ export const checkIpAddresses = (testUrl: URL, testIpPath: URL) => {
 }
 
 export const processFiles = async (files: string[], dir: string) => {
+    let isVideoUpdated = false
+
     for(const file of files) {
         const title = file.replace(/\.[^/.]+$/, '')
         const existingVideo = await Video.findOne({ title })
@@ -129,7 +131,12 @@ export const processFiles = async (files: string[], dir: string) => {
 
             if(url.origin !== ipPath.origin) {
                 await updateVideoUrl(title, file)
+                isVideoUpdated = true
             }
         }
+    }
+
+    if(isVideoUpdated) {
+        console.log('Finished updating videos.')
     }
 }
