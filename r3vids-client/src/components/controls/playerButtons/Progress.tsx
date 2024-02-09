@@ -1,22 +1,21 @@
-import { RefObject, SyntheticEvent, useEffect, useState } from 'react'
-import ReactPlayer from 'react-player'
+import { SyntheticEvent, useEffect, useState } from 'react'
+
 import { Box, Slider, Typography } from '@mui/material'
 import { useReactPlayerStore } from '../../../stores/reactPlayerStore.ts'
 import { useVideoPropertyStore } from '../../../stores/videoPropertyStore.ts'
 type Props = {
-	vidRef: RefObject<ReactPlayer>
+	player: HTMLVideoElement
 }
 
-const Progress = ({ vidRef }: Props) => {
-	const player = vidRef.current
+const Progress = ({ player }: Props) => {
 	const { progress, setProgress } = useReactPlayerStore()
 	const { metadata } = useVideoPropertyStore()
 	const [sliderValue, setSliderValue] = useState(0)
 	useEffect(() => {
 		setInterval(() => {
 			if (player) {
-				const playedSeconds = player.getCurrentTime()
-				const totalSeconds = player.getDuration()
+				const playedSeconds = player.currentTime
+				const totalSeconds = player.duration
 				const totalTime = (playedSeconds / totalSeconds) * 100
 
 				setProgress(totalTime)
@@ -45,9 +44,9 @@ const Progress = ({ vidRef }: Props) => {
 		newValue: number | number[],
 	) => {
 		if (player) {
-			const totalSeconds = player.getDuration()
+			const totalSeconds = player.duration
 			const newTime = (Number(newValue) / 100) * totalSeconds
-			player.seekTo(newTime, 'seconds')
+			player.currentTime = newTime
 			setProgress(progress)
 		}
 	}

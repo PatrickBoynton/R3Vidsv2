@@ -1,20 +1,26 @@
-import ReactPlayer from 'react-player'
 import ControlIcon from '../ControlIcon.tsx'
 import { useReactPlayerStore } from '../../../stores/reactPlayerStore.ts'
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit'
 import FullscreenIcon from '@mui/icons-material/Fullscreen'
-import { RefObject, useState } from 'react'
+import { useState } from 'react'
 import { iconStyles } from '../../../styles.ts'
 type Props = {
-	vidRef: RefObject<ReactPlayer>
+	vidRef: HTMLVideoElement
 }
 
 const FullScreenToggle = ({ vidRef }: Props) => {
 	const { _, fullScreen } = useReactPlayerStore()
 	const [___, setFullScreen] = useState(false)
-	const handleToggleFullScreen = (vidRef: RefObject<ReactPlayer>) => {
-		vidRef.current?.getInternalPlayer().requestFullscreen()
-		setFullScreen(true)
+	const handleToggleFullScreen = (vidRef: HTMLVideoElement) => {
+		if (!fullScreen && vidRef.requestFullscreen) {
+			vidRef.requestFullscreen()
+			setFullScreen(true)
+			vidRef.controls = true
+		} else {
+			document.exitFullscreen()
+			setFullScreen(false)
+			vidRef.controls = false
+		}
 	}
 	return (
 		<ControlIcon

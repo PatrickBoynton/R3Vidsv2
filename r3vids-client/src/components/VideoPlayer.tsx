@@ -1,28 +1,28 @@
-import ReactPlayer from 'react-player'
 import Controls from './controls/Controls.tsx'
 import { useVideoPropertyStore } from '../stores/videoPropertyStore.ts'
 import { useRef } from 'react'
 
 const VideoPlayer = () => {
 	const { url, currentPlayTime } = useVideoPropertyStore()
-	const vidRef = useRef<ReactPlayer | null>(null)
+	const vidRef = useRef<HTMLVideoElement>(null)
 
 	const handleStart = () => {
 		try {
-			vidRef.current?.seekTo(currentPlayTime)
+			if (vidRef.current) vidRef.current.currentTime = currentPlayTime
 		} catch (e) {
 			console.error('HandleStart: ', e)
 		}
 	}
 	return (
 		<>
-			<ReactPlayer
-				controls
-				url={url}
+			<video
+				height="600px"
+				width="100%"
+				src={url}
 				ref={vidRef}
-				onStart={() => handleStart()}
+				onLoadedMetadata={handleStart}
 			/>
-			<Controls vidRef={vidRef} />
+			{vidRef.current && <Controls vidRef={vidRef.current} />}
 		</>
 	)
 }

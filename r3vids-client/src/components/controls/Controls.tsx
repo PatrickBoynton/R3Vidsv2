@@ -1,11 +1,10 @@
 import PlayToggle from './playerButtons/TogglePlay/PlayToggle.tsx'
-import ReactPlayer from 'react-player'
 import RandomButton from './playerButtons/RandomButton.tsx'
 import DeletePlayed from './playerButtons/DeletePlayed.tsx'
 import FullScreenToggle from './playerButtons/FullScreen.tsx'
 import MuteToggle from './playerButtons/MuteToggle.tsx'
 import Progress from './playerButtons/Progress.tsx'
-import { RefObject, useEffect } from 'react'
+import { useEffect } from 'react'
 import Navigate from './playerButtons/Navigate/Navigate.tsx'
 import { useVideoApiStore } from '../../stores/videoApiStore.ts'
 import RandomPlayed from './playerButtons/RandomPlayed.tsx'
@@ -13,7 +12,7 @@ import { Box } from '@mui/material'
 import { RandomTimeFilter } from '../RandomTimeFilter.tsx'
 
 type Props = {
-	vidRef: RefObject<ReactPlayer>
+	vidRef: HTMLVideoElement
 }
 
 const Controls = ({ vidRef }: Props) => {
@@ -33,7 +32,7 @@ const Controls = ({ vidRef }: Props) => {
 				<PlayToggle vidRef={vidRef} />
 				<Navigate forward currentIndex={Number(currentIndex)} />
 			</Box>
-			<Progress vidRef={vidRef} />
+			<Progress player={vidRef} />
 			<Box>
 				<MuteToggle vidRef={vidRef} />
 				<FullScreenToggle vidRef={vidRef} />

@@ -1,17 +1,18 @@
 import ReactPlayer from 'react-player'
-import { RefObject, useState } from 'react'
+import {  useState } from 'react'
 import ControlIcon from '../ControlIcon.tsx'
 import { VolumeMute, VolumeUp } from '@mui/icons-material'
 import { iconStyles } from '../../../styles.ts'
 
 type Props = {
-	vidRef: RefObject<ReactPlayer>
+	vidRef: HTMLVideoElement
 }
 
 const MuteToggle = ({ vidRef }: Props) => {
 	const [muted, setMuted] = useState(false)
+	
 	const handleMute = () => {
-		const player = vidRef.current?.getInternalPlayer()
+		const player = vidRef
 
 		if (player && player.muted) {
 			setMuted(false)
