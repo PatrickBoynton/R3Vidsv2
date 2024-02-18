@@ -1,10 +1,10 @@
-import './App.css'
-import { useVideoApiStore } from './stores/videoApiStore'
-import { Typography } from '@mui/material'
+import { CssBaseline, Typography } from '@mui/material'
 import { useEffect } from 'react'
-import VideoList from './components/VideoList'
+import './App.css'
 import PlayedVideoList from './components/PlayedVideoList'
+import VideoList from './components/VideoList'
 import VideoPlayer from './components/VideoPlayer'
+import { useVideoApiStore } from './stores/videoApiStore'
 import { useVideoPropertyStore } from './stores/videoPropertyStore'
 
 const App = () => {
@@ -38,7 +38,14 @@ const App = () => {
 			}, 50)
 			return () => clearTimeout(delay)
 		}
-	}, [videos, getRandomVideo, getVideos, previousVideo, randomFilterDuration, randomFilterLength])
+	}, [
+		videos,
+		getRandomVideo,
+		getVideos,
+		previousVideo,
+		randomFilterDuration,
+		randomFilterLength,
+	])
 
 	useEffect(() => {
 		try {
@@ -52,6 +59,7 @@ const App = () => {
 
 	return (
 		<>
+			<CssBaseline />
 			<Typography variant="h1" color="text.primary">
 				{title}
 			</Typography>
