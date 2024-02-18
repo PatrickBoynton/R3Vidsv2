@@ -1,6 +1,6 @@
-import Controls from './controls/Controls.tsx'
-import { useVideoPropertyStore } from '../stores/videoPropertyStore.ts'
 import { useRef } from 'react'
+import { useVideoPropertyStore } from '../stores/videoPropertyStore.ts'
+import Controls from './controls/Controls.tsx'
 
 const VideoPlayer = () => {
 	const { url, currentPlayTime } = useVideoPropertyStore()
@@ -22,7 +22,7 @@ const VideoPlayer = () => {
 				ref={vidRef}
 				onLoadedMetadata={handleStart}
 			/>
-			{vidRef.current && <Controls vidRef={vidRef.current} />}
+			<Controls vidRef={vidRef.current as HTMLVideoElement} />
 		</>
 	)
 }

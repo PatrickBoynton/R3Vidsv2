@@ -1,7 +1,7 @@
-import { Video } from '../models/videoSchema'
 import { Request, Response } from 'express'
-import { updateProperties } from '../utils/controllerUtils'
 import { IVideo } from '../interfaces/IVideo'
+import { Video } from '../models/videoSchema'
+import { updateProperties } from '../utils/controllerUtils'
 import { displayCurrentDateAndTime } from '../utils/utils'
 
 export const getAllVideos = async (
@@ -165,6 +165,7 @@ export const deletePlayedVideos = async (
         video.played = false
         video.lastPlayed = undefined
         video.playCount = 0
+        video.currentPlayTime = 0
         await video.save()
     }
     console.log('Video deleted at: ' + displayCurrentDateAndTime())
