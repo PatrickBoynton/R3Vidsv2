@@ -5,7 +5,8 @@ services:
     image: mongo:latest
     container_name: r3vidsdb
     restart: always
+    # I have another mognoDB instance running on 27017, so I'm using 27018 here.
     ports:
-      - '27017:27017'
+      - '27018:27017'
     volumes:
       - ./backend/localdb:/data/db
