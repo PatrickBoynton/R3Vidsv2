@@ -1,6 +1,6 @@
 import { CssBaseline, Typography } from '@mui/material'
 import { useEffect } from 'react'
-import './App.css'
+
 import PlayedVideoList from './components/PlayedVideoList'
 import VideoList from './components/VideoList'
 import VideoPlayer from './components/VideoPlayer'
